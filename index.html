@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Networks – Interactive Study + Quiz</title>
+<style>
+:root{--bg:#f4f6f9;--bg-card:#fff;--bg-soft:#eef1f6;--text:#1a1a2e;--text-soft:#5a5a72;--navy:#16213e;--blue:#1a73e8;--blue-soft:#e3edfd;--green:#2e7d32;--green-soft:#e6f4e6;--red:#c62828;--red-soft:#fdeaea;--amber:#b26a00;--border:#dde3ec;--shadow:0 2px 12px rgba(22,33,62,.07);--radius:14px}
+[data-theme="dark"]{--bg:#0e1220;--bg-card:#182036;--bg-soft:#202a44;--text:#e8ecf6;--text-soft:#9aa5bd;--navy:#cdd8f0;--blue:#6aa8ff;--blue-soft:#1e2f52;--green:#6fcf82;--green-soft:#1e3a26;--red:#f08080;--red-soft:#3c1f1f;--amber:#f0b860;--border:#2a3652;--shadow:0 2px 16px rgba(0,0,0,.35)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;transition:background .3s,color .3s;min-height:100vh}
+.en{direction:ltr;text-align:left;font-family:"Segoe UI",Arial,sans-serif}
+.container{max-width:1100px;margin:0 auto;padding:0 18px}
+header{background:var(--bg-card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;max-width:1100px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;color:var(--navy)}
+.logo .dot{width:34px;height:34px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.theme-btn{background:var(--bg-soft);border:1px solid var(--border);color:var(--text);width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.theme-btn:hover{background:var(--blue-soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:11px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;font-family:inherit;transition:.2s;background:var(--blue);color:#fff}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:none}
+.btn.secondary{background:var(--bg-soft);color:var(--text);border:1px solid var(--border)}
+.btn.secondary:hover{background:var(--blue-soft)}
+.btn.green{background:var(--green)}
+.btn.small{padding:7px 14px;font-size:.82rem;border-radius:8px}
+.btn.full{width:100%}
+.page-title{font-size:1.7rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.page-sub{color:var(--text-soft);margin-bottom:26px;font-size:.95rem}
+.progress-panel{background:var(--bg-card);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:22px}
+.progress-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.progress-head h3{font-size:1.05rem;color:var(--navy)}
+.progress-bar{height:14px;background:var(--bg-soft);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1a73e8,#4f9bff);border-radius:10px;transition:width .5s ease}
+.progress-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:.85rem;color:var(--text-soft);flex-wrap:wrap;gap:6px}
+
+/* Quiz banner */
+.quiz-banner{background:linear-gradient(135deg,#16213e 0%,#1a73e8 100%);border-radius:var(--radius);padding:22px 26px;margin-bottom:26px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;color:#fff;box-shadow:0 6px 20px rgba(26,115,232,.25)}
+.quiz-banner-icon{font-size:2.4rem;background:rgba(255,255,255,.18);width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.quiz-banner-content{flex:1;min-width:220px}
+.quiz-banner-content h3{font-size:1.15rem;margin-bottom:4px;color:#fff}
+.quiz-banner-content p{font-size:.85rem;opacity:.9}
+.quiz-banner-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.quiz-best-score{font-size:.8rem;background:rgba(255,255,255,.18);padding:8px 14px;border-radius:10px;font-weight:700}
+.quiz-banner .btn{background:#fff;color:#1a73e8;font-weight:800}
+.quiz-banner .btn:hover{background:#f0f6ff}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.part-card{background:var(--bg-card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;flex-direction:column;transition:.25s;position:relative;overflow:hidden}
+.part-card:hover{transform:translateY(-4px);box-shadow:0 8px 26px rgba(22,33,62,.13)}
+.part-card::before{content:'';position:absolute;top:0;right:0;left:0;height:5px;background:linear-gradient(90deg,var(--blue),#7bb5ff)}
+.part-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700;margin-bottom:12px;width:fit-content}
+.badge-notstarted{background:var(--bg-soft);color:var(--text-soft)}
+.badge-inprogress{background:#fff3cd;color:#7a5b00}
+[data-theme="dark"] .badge-inprogress{background:#3a3115;color:#e8c876}
+.badge-completed{background:var(--green-soft);color:var(--green)}
+.part-card h3{font-size:1.15rem;color:var(--navy);margin-bottom:4px}
+.part-card .pages{font-size:.82rem;color:var(--text-soft);margin-bottom:10px}
+.part-card .desc{font-size:.88rem;color:var(--text-soft);margin-bottom:16px;flex:1}
+.part-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat-box{background:var(--bg-soft);border-radius:10px;padding:8px 10px;text-align:center}
+.stat-box .num{font-weight:800;color:var(--blue);font-size:1.05rem}
+.stat-box .lbl{font-size:.7rem;color:var(--text-soft)}
+.part-progress{margin-bottom:14px}
+.part-progress .progress-bar{height:8px}
+.part-progress .pct{font-size:.75rem;color:var(--text-soft);margin-top:4px;display:block}
+
+.stage-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.stage-tab{padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-soft);cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:600;transition:.2s;display:flex;align-items:center;gap:7px}
+.stage-tab:hover{border-color:var(--blue);color:var(--blue)}
+.stage-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.stage-tab .step-num{width:22px;height:22px;border-radius:50%;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800}
+.stage-tab.active .step-num{background:rgba(255,255,255,.25)}
+.stage-tab.done .step-num{background:var(--green);color:#fff}
+
+.lesson-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.lesson-pill{padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-soft);cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:600;transition:.2s}
+.lesson-pill:hover{border-color:var(--blue)}
+.lesson-pill.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.lesson-pill.done{border-color:var(--green);color:var(--green)}
+.lesson-pill.done.active{background:var(--green);color:#fff}
+
+.study-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:30px;margin-bottom:20px}
+.study-card h2{color:var(--navy);font-size:1.3rem;margin-bottom:4px}
+.lesson-subtitle{color:var(--text-soft);font-size:.85rem;margin-bottom:22px}
+.content-block{margin-bottom:22px}
+.content-block h4{font-size:.95rem;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.content-block h4 .ico{font-size:1.05rem}
+.content-block .en-text{background:var(--bg-soft);border-right:4px solid var(--blue);border-radius:8px;padding:14px 16px;font-size:.92rem;color:var(--text);margin-bottom:10px}
+.content-block .ar-text{background:var(--bg-soft);border-right:4px solid var(--green);border-radius:8px;padding:14px 16px;font-size:.92rem;margin-bottom:10px}
+.content-block .explain{background:#fff8e8;border-right:4px solid var(--amber);border-radius:8px;padding:14px 16px;font-size:.92rem}
+[data-theme="dark"] .content-block .explain{background:#2b2718}
+.term-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:6px}
+.term-table th,.term-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right}
+.term-table th{background:var(--bg-soft);color:var(--navy);font-weight:700;font-size:.8rem}
+.term-table td:first-child{font-weight:600;color:var(--blue);direction:ltr;text-align:left}
+.exam-note{background:var(--blue-soft);border-radius:10px;padding:14px 16px;font-size:.88rem;border:1px dashed var(--blue)}
+.exam-note strong{color:var(--blue)}
+.lesson-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px}
+
+.flash-wrap{max-width:750px;margin:0 auto}
+.flash-counter{text-align:center;color:var(--text-soft);font-size:.85rem;margin-bottom:14px;font-weight:600}
+.flash-card{background:var(--bg-card);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--border);padding:36px 32px;min-height:280px;display:flex;flex-direction:column;justify-content:center;margin-bottom:20px;transition:.3s}
+.flash-q{font-size:1.1rem;font-weight:700;color:var(--navy);text-align:center}
+.flash-label{font-size:.72rem;color:var(--text-soft);text-align:center;margin-bottom:14px;letter-spacing:1px}
+.flash-answer{margin-top:26px;padding-top:22px;border-top:2px dashed var(--border);animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.flash-answer .ans-en{background:var(--green-soft);border-radius:10px;padding:14px 16px;margin-bottom:12px;font-size:.92rem}
+.flash-answer .ans-ar{background:var(--bg-soft);border-radius:10px;padding:14px 16px;font-size:.92rem}
+.flash-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.reviewed-tag{text-align:center;margin-top:12px;font-size:.82rem;color:var(--green);font-weight:700}
+
+.summary-list{display:flex;flex-direction:column;gap:12px;max-width:850px;margin:0 auto}
+.summary-item{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);padding:16px 18px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;transition:.2s}
+.summary-item:hover{border-color:var(--blue)}
+.summary-num{min-width:32px;height:32px;border-radius:9px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.summary-body{flex:1}
+.summary-en{font-size:.9rem;color:var(--text);margin-bottom:5px}
+.summary-ar{font-size:.85rem;color:var(--text-soft)}
+.star-btn{background:none;border:none;cursor:pointer;font-size:1.2rem;opacity:.35;transition:.2s;padding:4px}
+.star-btn.on{opacity:1}
+
+.exam-wrap{max-width:780px;margin:0 auto}
+.exam-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.exam-progress{flex:1;min-width:200px}
+.exam-q-num{font-size:.82rem;color:var(--text-soft);font-weight:700;margin-bottom:6px}
+.exam-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:28px;margin-bottom:18px}
+.exam-q-text{font-size:1.02rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.exam-q-text-ar{font-size:.85rem;color:var(--text-soft);margin-top:6px;font-weight:400}
+.option{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-radius:10px;border:1.5px solid var(--border);margin-bottom:10px;cursor:pointer;transition:.18s;background:var(--bg-card);font-size:.9rem}
+.option:hover{border-color:var(--blue);background:var(--blue-soft)}
+.option.selected{border-color:var(--blue);background:var(--blue-soft)}
+.option.correct{border-color:var(--green);background:var(--green-soft)}
+.option.wrong{border-color:var(--red);background:var(--red-soft)}
+.option .opt-letter{min-width:26px;height:26px;border-radius:7px;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem}
+.option.selected .opt-letter{background:var(--blue);color:#fff}
+.option.correct .opt-letter{background:var(--green);color:#fff}
+.option.wrong .opt-letter{background:var(--red);color:#fff}
+.option.disabled{pointer-events:none}
+.exam-feedback{margin-top:16px;padding:16px;border-radius:10px;animation:fadeIn .3s}
+.exam-feedback.correct{background:var(--green-soft);border:1px solid var(--green)}
+.exam-feedback.wrong{background:var(--red-soft);border:1px solid var(--red)}
+.fb-title{font-weight:800;margin-bottom:8px;font-size:.95rem}
+.fb-title.correct{color:var(--green)}
+.fb-title.wrong{color:var(--red)}
+.fb-body{font-size:.88rem}
+.fb-body .fb-ar{color:var(--text-soft);margin-top:6px}
+
+.results-wrap{max-width:800px;margin:0 auto}
+.score-circle{width:170px;height:170px;border-radius:50%;margin:0 auto 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:conic-gradient(var(--blue) var(--pct),var(--bg-soft) 0);position:relative}
+.score-circle::after{content:'';position:absolute;inset:12px;border-radius:50%;background:var(--bg-card)}
+.score-circle .score-inner{position:relative;z-index:2;text-align:center}
+.score-circle .score-num{font-size:2rem;font-weight:800;color:var(--navy);line-height:1}
+.score-circle .score-lbl{font-size:.8rem;color:var(--text-soft)}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:26px}
+.result-box{background:var(--bg-card);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow)}
+.result-box .num{font-size:1.4rem;font-weight:800}
+.result-box .lbl{font-size:.78rem;color:var(--text-soft)}
+.result-box.good .num{color:var(--green)}
+.result-box.bad .num{color:var(--red)}
+.wrong-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.wrong-item{background:var(--red-soft);border-radius:10px;padding:14px 16px;border-right:4px solid var(--red);font-size:.88rem}
+.wrong-item .wq{font-weight:700;margin-bottom:6px}
+.wrong-item .wa{color:var(--green);font-weight:600}
+.perf-banner{text-align:center;padding:16px;border-radius:12px;font-weight:800;font-size:1.05rem;margin-bottom:22px}
+
+.revision-section{background:var(--bg-card);border-radius:var(--radius);padding:26px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:22px}
+.revision-section h3{color:var(--navy);margin-bottom:14px;font-size:1.1rem}
+
+/* Quiz-specific */
+.quiz-hero{background:var(--bg-card);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px}
+.quiz-hero-title{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px}
+.quiz-hero-sub{font-size:.85rem;color:var(--text-soft);margin-bottom:14px}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.78rem;font-weight:700}
+.q-num{color:var(--blue)}
+.q-level{padding:3px 10px;border-radius:20px;background:var(--bg-soft);color:var(--text-soft)}
+.q-level.easy{background:var(--green-soft);color:var(--green)}
+.q-level.medium{background:#fff3cd;color:#7a5b00}
+.q-level.hard{background:var(--red-soft);color:var(--red)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--navy);color:#fff;padding:13px 26px;border-radius:12px;font-size:.9rem;font-weight:600;z-index:9999;transition:.35s;box-shadow:0 8px 26px rgba(0,0,0,.3)}
+[data-theme="dark"] .toast{background:var(--blue)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.hidden{display:none!important}
+.center{text-align:center}
+.mt-10{margin-top:10px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mb-20{margin-bottom:20px}
+@media (max-width:640px){
+  .study-card,.exam-card,.flash-card{padding:20px}
+  .page-title{font-size:1.35rem}
+  .header-inner{padding:12px 14px}
+  .btn{padding:10px 16px;font-size:.88rem}
+  .stage-tab{padding:8px 12px;font-size:.8rem}
+  .quiz-banner{padding:16px 18px}
+  .quiz-banner-icon{width:52px;height:52px;font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="dot">🌐</span> Computer Networks</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="theme-btn" id="themeBtn" title="تبديل الوضع">🌙</button>
+    </div>
+  </div>
+</header>
+<main class="container" id="app" style="padding:28px 18px 60px;"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   QUIZ_QUESTIONS – 60 Questions (Comprehensive Quiz)
+   ============================================================ */
+const QUIZ_QUESTIONS = [
+  {q:"What is a computer network?",ar:"ما هي شبكة الحاسوب؟",lvl:"easy",o:["A single autonomous computer","A collection of autonomous computers interconnected to exchange information","A type of cable","A software program"],c:1,exp:"A computer network is a collection of autonomous computers interconnected by a single technology to exchange information.",expAr:"شبكة الحاسوب هي مجموعة من الحواسيب المستقلة المترابطة بتقنية واحدة لتبادل المعلومات."},
+  {q:"What is a Node in a network?",ar:"ما هي العُقدة في الشبكة؟",lvl:"easy",o:["A type of cable","Any device capable of sending and/or receiving data on the network","A protocol only","A server only"],c:1,exp:"A Node is any device (computer, printer, etc.) capable of sending and/or receiving data on a network.",expAr:"العُقدة هي أي جهاز (حاسوب، طابعة، إلخ) قادر على إرسال و/أو استقبال البيانات على الشبكة."},
+  {q:"A Protocol is best defined as:",ar:"البروتوكول يُعرَّف بأنه:",lvl:"easy",o:["A physical cable","A set of standardized rules governing how data is exchanged","A type of server","A network topology"],c:1,exp:"A Protocol is a set of standardized rules that govern how data is exchanged between devices (e.g., TCP/IP).",expAr:"البروتوكول هو مجموعة قواعد موحدة تحكم كيفية تبادل البيانات بين الأجهزة (مثل TCP/IP)."},
+  {q:"Which of the following is a Medium used to carry data?",ar:"أي مما يلي يُعد وسطًا لنقل البيانات؟",lvl:"easy",o:["HTTP","Fiber optic cable","IP address","Router"],c:1,exp:"Medium is the physical path or channel used to carry data — copper twisted-pair, fiber optic, or wireless (air/radio waves).",expAr:"الوسط هو المسار المادي أو القناة المستخدمة لحمل البيانات — نحاس مجدول، ألياف بصرية، أو لاسلكي."},
+  {q:"What is the main difference between LAN and WAN?",ar:"ما الفرق الرئيسي بين LAN وWAN؟",lvl:"medium",o:["LAN is wireless, WAN is wired","LAN covers a small area, WAN covers a large area","LAN is faster than WAN in all cases","WAN is only used inside a building"],c:1,exp:"LAN is confined to a small geographic area (room, building, campus). WAN interconnects LANs over a large geographic area (country/world).",expAr:"LAN محصورة في منطقة صغيرة (غرفة، مبنى، حرم جامعي). WAN تربط شبكات LAN عبر منطقة واسعة (دولة/العالم)."},
+  {q:"Physical Topology refers to:",ar:"الطوبولوجيا المادية تشير إلى:",lvl:"easy",o:["The path data actually takes","The actual physical layout of cables and devices","The protocol used","The speed of the network"],c:1,exp:"Physical Topology is the actual physical layout or shape of a network's hardware (cables, devices, connections).",expAr:"الطوبولوجيا المادية هي التخطيط المادي الفعلي لعتاد الشبكة (الكابلات والأجهزة والاتصالات)."},
+  {q:"Logical Topology refers to:",ar:"الطوبولوجيا المنطقية تشير إلى:",lvl:"easy",o:["The physical shape of the cables","The path that data actually takes across the network","The color of the cables","The number of users"],c:1,exp:"Logical Topology is the path that data actually takes as it travels from one computer to another, regardless of physical layout.",expAr:"الطوبولوجيا المنطقية هي المسار الفعلي الذي تسلكه البيانات أثناء انتقالها من حاسوب لآخر، بغض النظر عن التخطيط المادي."},
+  {q:"A Hub differs from a Switch because:",ar:"الهَب يختلف عن السويتش لأن:",lvl:"medium",o:["Hub is smarter than Switch","Hub broadcasts data to all ports while Switch forwards only to the destination using MAC","Switch cannot connect devices","Hub uses IP addresses"],c:1,exp:"A Hub broadcasts data to all ports. A Switch forwards data only to the specific destination device using its MAC address.",expAr:"الهَب يبث البيانات لكل المنافذ. السويتش يوجه البيانات فقط للجهاز المقصود باستخدام عنوان MAC."},
+  {q:"What is the primary function of a Router?",ar:"ما هي الوظيفة الأساسية للراوتر؟",lvl:"easy",o:["Connect devices within the same LAN","Connect different networks and determine the best path using IP","Convert analog signals to digital","Provide power to devices"],c:1,exp:"A Router connects different networks and uses the destination IP address to determine the best path for data.",expAr:"الراوتر يربط شبكات مختلفة ويستخدم عنوان IP الوجهة لتحديد أفضل مسار للبيانات."},
+  {q:"What is a NIC?",ar:"ما هو NIC؟",lvl:"easy",o:["A network protocol","A hardware component that connects a computer to a network (LAN)","A type of router","A network topology"],c:1,exp:"NIC (Network Interface Card) is a hardware component that connects a computer to a network (LAN).",expAr:"كارت واجهة الشبكة (NIC) هو مكوّن مادي يربط الحاسوب بالشبكة المحلية."},
+  {q:"Which topology uses a single backbone cable with terminators at both ends?",ar:"أي طوبولوجيا تستخدم كابلًا مركزيًا واحدًا مع طرفيات في النهايتين؟",lvl:"medium",o:["Star","Ring","Bus","Mesh"],c:2,exp:"Bus topology connects all devices to a single central cable (backbone) with terminators at both ends.",expAr:"طوبولوجيا الناقل تربط كل الأجهزة بكابل مركزي واحد مع طرفيات في النهايتين."},
+  {q:"Why is Star topology the most common in modern LANs?",ar:"لماذا تعتبر طوبولوجيا النجمة الأكثر شيوعًا في الشبكات المحلية الحديثة؟",lvl:"medium",o:["It requires the least cable","It is easy to troubleshoot and a single cable failure affects only one device","It is the cheapest","It has no central device"],c:1,exp:"Star topology is easy to install and troubleshoot; a single cable failure affects only one device.",expAr:"طوبولوجيا النجمة سهلة التركيب والصيانة؛ فشل كابل واحد يؤثر فقط على جهاز واحد."},
+  {q:"Which topology is the most reliable and fault-tolerant?",ar:"أي طوبولوجيا هي الأكثر موثوقية وتحملًا للأعطال؟",lvl:"medium",o:["Bus","Ring","Star","Mesh"],c:3,exp:"Mesh is the most reliable and fault-tolerant: if one link fails, data takes a different path. No traffic collisions and secure.",expAr:"Mesh هي الأكثر موثوقية: إذا فشل رابط، تأخذ البيانات مسارًا مختلفًا. لا تصادمات وهي آمنة."},
+  {q:"Which network type spans 5 to 50 km and connects multiple LANs in a city?",ar:"أي نوع شبكة يمتد من 5 إلى 50 كم ويربط عدة LANs في مدينة؟",lvl:"medium",o:["LAN","MAN","WAN","PAN"],c:1,exp:"MAN (Metropolitan Area Network) extends over a large area (5–50 km), connecting multiple LANs.",expAr:"MAN (شبكة إقليمية) تمتد على منطقة كبيرة (5–50 كم) وتربط عدة شبكات محلية."},
+  {q:"The best example of a WAN is:",ar:"أفضل مثال على WAN هو:",lvl:"easy",o:["Home Wi-Fi network","The Internet","A Bluetooth pairing","A USB connection"],c:1,exp:"WAN is a country-wide or worldwide network; the Internet is the best example.",expAr:"WAN شبكة على مستوى الدولة أو العالم؛ الإنترنت هو أفضل مثال."},
+  {q:"Which of the following is a Real-time application?",ar:"أي مما يلي تطبيق فوري (Real-time)؟",lvl:"easy",o:["FTP file transfer","Email","VoIP and video","Database updates"],c:2,exp:"Real-time applications like VoIP and video are time-critical; QoS and sufficient bandwidth are mandatory.",expAr:"التطبيقات الفورية مثل VoIP والفيديو حساسة للوقت؛ QoS وعرض النطاق الكافي ضروريان."},
+  {q:"FTP is an example of which application category?",ar:"FTP مثال على أي فئة من التطبيقات؟",lvl:"medium",o:["Batch application","Interactive application","Real-time application","Network management"],c:0,exp:"Batch applications are started by a human and complete on their own; FTP and TFTP are examples.",expAr:"تطبيقات الدفعات يبدأها الإنسان وتكتمل وحدها؛ FTP وTFTP أمثلة."},
+  {q:"A Protocol Analyzer is used for:",ar:"محلل البروتوكول يستخدم لـ:",lvl:"medium",o:["Routing packets","Network monitoring (capturing and decoding packets)","Assigning IP addresses","Building cables"],c:1,exp:"Network monitoring includes protocol analyzers and sniffers that capture and decode network packets for easy reading.",expAr:"مراقبة الشبكة تشمل محللات البروتوكول وأجهزة الالتقاط التي تلتقط وتفك حزم الشبكة."},
+  {q:"Which of the following is NOT a characteristic of a network?",ar:"أي مما يلي ليس من خصائص الشبكة؟",lvl:"easy",o:["Speed","Scalability","Color","Reliability"],c:2,exp:"Network characteristics: Speed, Cost, Security, Availability, Scalability, Reliability, Topology. Color is irrelevant.",expAr:"خصائص الشبكة: السرعة، التكلفة، الأمان، التوافر، قابلية التوسع، الموثوقية، الطوبولوجيا. اللون لا علاقة له."},
+  {q:"What does QoS stand for?",ar:"ماذا تعني QoS؟",lvl:"easy",o:["Quality of Service","Quick Operating System","Quantity of Segments","Queue of Signals"],c:0,exp:"QoS = Quality of Service. It is mandatory for real-time applications like VoIP.",expAr:"QoS = جودة الخدمة. ضرورية للتطبيقات الفورية مثل VoIP."},
+  {q:"Which storage type is a dedicated high-speed network for servers and storage devices?",ar:"أي نوع تخزين عبارة عن شبكة مخصصة عالية السرعة للخوادم وأجهزة التخزين؟",lvl:"medium",o:["DAS","NAS","SAN","PAN"],c:2,exp:"SAN (Storage Area Network) is a specialized high-speed network connecting servers to dedicated storage, using Fibre Channel or iSCSI.",expAr:"SAN (شبكة تخزين مخصصة) هي شبكة عالية السرعة تربط الخوادم بأجهزة تخزين مخصصة عبر Fibre Channel أو iSCSI."},
+  {q:"PAN typically uses which technology?",ar:"شبكة PAN تستخدم عادة أي تقنية؟",lvl:"easy",o:["Fibre Channel","Bluetooth, NFC, or USB","Satellite links","Leased telephone lines"],c:1,exp:"PAN (Personal Area Network) uses Bluetooth, NFC, or USB, with range typically within 10 meters.",expAr:"PAN (شبكة شخصية) تستخدم البلوتوث أو NFC أو USB، ومداها عادة أقل من 10 أمتار."},
+  {q:"How many layers are in the OSI model?",ar:"كم عدد طبقات نموذج OSI؟",lvl:"easy",o:["4","5","6","7"],c:3,exp:"The OSI model has 7 layers: Application, Presentation, Session, Transport, Network, Data Link, Physical.",expAr:"نموذج OSI له 7 طبقات: التطبيقات، التقديم، الجلسة، النقل، الشبكة، ربط البيانات، الفيزيائية."},
+  {q:"Which layer is the closest to the user in the OSI model?",ar:"أي طبقة هي الأقرب للمستخدم في نموذج OSI؟",lvl:"easy",o:["Physical","Network","Application","Session"],c:2,exp:"The Application Layer (Layer 7) is the highest layer and closest to the user.",expAr:"طبقة التطبيقات (الطبقة 7) هي الأعلى والأقرب للمستخدم."},
+  {q:"Which layer is responsible for transmitting raw bits over the medium?",ar:"أي طبقة مسؤولة عن نقل البتات الخام عبر الوسط؟",lvl:"easy",o:["Application","Transport","Data Link","Physical"],c:3,exp:"The Physical Layer (Layer 1) sends raw bits (0s and 1s) over copper, fiber, or air.",expAr:"الطبقة الفيزيائية (الطبقة 1) ترسل البتات الخام (0 و1) عبر النحاس أو الألياف أو الهواء."},
+  {q:"Which port does HTTP use?",ar:"أي منفذ يستخدمه HTTP؟",lvl:"easy",o:["80","443","25","53"],c:0,exp:"HTTP uses port 80. HTTPS uses port 443.",expAr:"HTTP يستخدم المنفذ 80. HTTPS يستخدم المنفذ 443."},
+  {q:"Which port does HTTPS use?",ar:"أي منفذ يستخدمه HTTPS؟",lvl:"easy",o:["21","22","443","110"],c:2,exp:"HTTPS uses port 443 for secure web browsing.",expAr:"HTTPS يستخدم المنفذ 443 لتصفح الويب الآمن."},
+  {q:"SMTP uses which port?",ar:"SMTP يستخدم أي منفذ؟",lvl:"medium",o:["25","53","80","443"],c:0,exp:"SMTP (Simple Mail Transfer Protocol) uses port 25 for sending email.",expAr:"SMTP يستخدم المنفذ 25 لإرسال البريد الإلكتروني."},
+  {q:"DNS uses which port?",ar:"DNS يستخدم أي منفذ؟",lvl:"medium",o:["25","53","80","110"],c:1,exp:"DNS (Domain Name System) uses port 53 for domain name resolution.",expAr:"DNS يستخدم المنفذ 53 لترجمة أسماء النطاقات."},
+  {q:"Chrome is an example of:",ar:"كروم مثال على:",lvl:"medium",o:["The Application Layer","An Application Program","A Transport protocol","A Network device"],c:1,exp:"Chrome is an Application Program (software). The Application Layer is the protocol it uses (HTTP).",expAr:"كروم برنامج تطبيق. طبقة التطبيقات هي البروتوكول الذي يستخدمه (HTTP)."},
+  {q:"What are the main jobs of the Presentation Layer?",ar:"ما هي المهام الرئيسية لطبقة التقديم؟",lvl:"medium",o:["Routing and addressing","Translation, encryption, compression","Session management","Framing and MAC addressing"],c:1,exp:"The Presentation Layer handles Translation (format conversion), Character Encoding, Data Compression, and Encryption/Decryption.",expAr:"طبقة التقديم تتولى الترجمة (تحويل الصيغة)، ترميز الأحرف، ضغط البيانات، والتشفير/فك التشفير."},
+  {q:"SSL/TLS operates primarily at which layer?",ar:"SSL/TLS يعمل بشكل أساسي في أي طبقة؟",lvl:"medium",o:["Application","Presentation","Session","Transport"],c:1,exp:"SSL/TLS provides encryption and is associated with the Presentation Layer (Layer 6).",expAr:"SSL/TLS يوفر التشفير ويرتبط بطبقة التقديم (الطبقة 6)."},
+  {q:"What is a session?",ar:"ما هي الجلسة؟",lvl:"medium",o:["A physical cable","A conversation between two devices or applications","A type of IP address","A network topology"],c:1,exp:"A session is a conversation between two devices or applications that begins when communication starts and ends when it finishes.",expAr:"الجلسة هي محادثة بين جهازين أو تطبيقين تبدأ عند بدء الاتصال وتنتهي عند انتهائه."},
+  {q:"Which dialog mode allows both devices to communicate simultaneously?",ar:"أي وضع حوار يسمح للجهازين بالاتصال في نفس الوقت؟",lvl:"easy",o:["Simplex","Half-Duplex","Full-Duplex","None"],c:2,exp:"Full-Duplex allows simultaneous two-way communication (e.g., phone call). Half-Duplex alternates.",expAr:"Full-Duplex يسمح بالاتصال المتزامن في الاتجاهين (مثل المكالمة الهاتفية). Half-Duplex بالتناوب."},
+  {q:"What is the PDU of the Transport Layer?",ar:"ما هي وحدة البيانات (PDU) لطبقة النقل؟",lvl:"medium",o:["Packets","Frames","Segments","Bits"],c:2,exp:"The Transport Layer PDU is Segments (TCP) or Datagrams (UDP).",expAr:"وحدة بيانات طبقة النقل هي المقاطع (TCP) أو المخططات (UDP)."},
+  {q:"Which protocol is reliable and connection-oriented?",ar:"أي بروتوكول موثوق وموجه بالاتصال؟",lvl:"easy",o:["UDP","TCP","ICMP","ARP"],c:1,exp:"TCP (Transmission Control Protocol) is connection-oriented (3-way handshake) and reliable.",expAr:"TCP موجه بالاتصال (مصافحة ثلاثية) وموثوق."},
+  {q:"Which protocol is faster but unreliable?",ar:"أي بروتوكول أسرع لكن غير موثوق؟",lvl:"easy",o:["TCP","UDP","HTTP","SMTP"],c:1,exp:"UDP (User Datagram Protocol) is connectionless and unreliable (best effort) but faster, used for streaming and gaming.",expAr:"UDP بلا اتصال وغير موثوق (أفضل جهد) لكن أسرع، يستخدم للبث والألعاب."},
+  {q:"The TCP 3-way handshake sequence is:",ar:"تسلسل المصافحة الثلاثية لـ TCP هو:",lvl:"medium",o:["ACK, SYN, SYN-ACK","SYN, SYN-ACK, ACK","SYN, ACK, SYN-ACK","SYN-ACK, ACK, SYN"],c:1,exp:"TCP uses SYN (sender asks to connect), SYN-ACK (receiver agrees), then ACK (sender confirms).",expAr:"TCP يستخدم SYN (طلب الاتصال)، SYN-ACK (موافقة)، ثم ACK (تأكيد)."},
+  {q:"Flow Control in the Transport Layer:",ar:"التحكم في التدفق في طبقة النقل:",lvl:"medium",o:["Encrypts data","Prevents a fast sender from overwhelming a slow receiver","Assigns IP addresses","Routes packets"],c:1,exp:"Flow control prevents a fast sender from overwhelming a slow receiver using windowing.",expAr:"التحكم في التدفق يمنع المرسل السريع من إغراق المستقبل البطيء باستخدام النوافذ."},
+  {q:"Multiplexing in the Transport Layer allows:",ar:"التعددية في طبقة النقل تسمح بـ:",lvl:"medium",o:["Only one app to use the network","Many apps to use the network simultaneously via different ports","Encryption of data","Faster routing"],c:1,exp:"Multiplexing allows many applications to use the network at the same time; each app uses a different port so data goes to the right place.",expAr:"التعددية تسمح للعديد من التطبيقات باستخدام الشبكة في نفس الوقت؛ كل تطبيق بمنفذ مختلف لتصل البيانات لمكانها."},
+  {q:"What is the PDU of the Network Layer?",ar:"ما هي وحدة البيانات (PDU) لطبقة الشبكة؟",lvl:"medium",o:["Segment","Packet","Frame","Bit"],c:1,exp:"The Network Layer PDU is Packets, containing source/destination IP and payload.",expAr:"وحدة بيانات طبقة الشبكة هي الحزم، تحتوي IP المصدر والوجهة والحمولة."},
+  {q:"What is the difference between an IP address and a MAC address?",ar:"ما الفرق بين عنوان IP وعنوان MAC؟",lvl:"medium",o:["IP is physical, MAC is logical","IP is logical and can change; MAC is fixed hardware","Both are fixed","Neither is used in networking"],c:1,exp:"IP address is logical and can change; it identifies devices globally across networks. MAC is the fixed physical hardware address.",expAr:"عنوان IP منطقي وقابل للتغيير ويحدد الأجهزة عالميًا. MAC هو العنوان المادي الثابت للعتاد."},
+  {q:"What does ICMP primarily provide?",ar:"ماذا يوفر ICMP بشكل أساسي؟",lvl:"medium",o:["File transfer","Error messages and diagnostics (e.g., ping)","Web browsing","Email"],c:1,exp:"ICMP provides error messages and diagnostics like the ping command.",expAr:"ICMP يوفر رسائل الأخطاء والتشخيص مثل أمر ping."},
+  {q:"What does ARP do?",ar:"ماذا يفعل ARP؟",lvl:"medium",o:["Maps IP to port","Maps IP to MAC","Maps MAC to port","Maps URL to IP"],c:1,exp:"ARP (Address Resolution Protocol) maps IP addresses to MAC addresses (works between Layer 2 & 3).",expAr:"ARP يربط عناوين IP بعناوين MAC (يعمل بين الطبقتين 2 و3)."},
+  {q:"Fragmentation in the Network Layer is:",ar:"التجزئة في طبقة الشبكة هي:",lvl:"medium",o:["Encrypting packets","Splitting large packets into smaller fragments","Compressing data","Ordering segments"],c:1,exp:"If a packet is too large for a network, the Network Layer splits it into smaller pieces (fragments), reassembled at the destination.",expAr:"إذا كانت الحزمة كبيرة جدًا على الشبكة، تقسمها طبقة الشبكة إلى أجزاء أصغر (شظايا) تُعاد تجميعها عند الوجهة."},
+  {q:"What is the PDU of the Data Link Layer?",ar:"ما هي وحدة البيانات (PDU) لطبقة ربط البيانات؟",lvl:"medium",o:["Packet","Frame","Segment","Bit"],c:1,exp:"The Data Link Layer PDU is Frames. It wraps packets into frames with MAC addresses and start/stop bits.",expAr:"وحدة بيانات طبقة ربط البيانات هي الإطارات. تغلف الحزم في إطارات بعناوين MAC وبتات بداية ونهاية."},
+  {q:"What is the function of the LLC sublayer?",ar:"ما وظيفة الطبقة الفرعية LLC؟",lvl:"medium",o:["Handles hardware addressing","Handles flow and error control and talks to upper layers","Routes packets","Encrypts data"],c:1,exp:"LLC (Logical Link Control) handles flow control and error control and talks to upper layers. MAC handles hardware addressing.",expAr:"LLC تتولى التحكم في التدفق والأخطاء وتتواصل مع الطبقات العليا. MAC تتولى العنونة المادية."},
+  {q:"Which topology is most common in modern LANs?",ar:"أي طوبولوجيا هي الأكثر شيوعًا في الشبكات المحلية الحديثة؟",lvl:"easy",o:["Bus","Ring","Star","Mesh"],c:2,exp:"Star topology is the most common because it is easy to troubleshoot and a single cable failure affects only one device.",expAr:"طوبولوجيا النجمة هي الأكثر شيوعًا لسهولة الصيانة وتأثير فشل الكابل على جهاز واحد فقط."},
+  {q:"Which layer uses a clock signal to synchronize bits?",ar:"أي طبقة تستخدم إشارة ساعة لتزامن البتات؟",lvl:"medium",o:["Physical","Data Link","Network","Transport"],c:0,exp:"The Physical Layer uses a clock signal so bits arrive at the right moment.",expAr:"الطبقة الفيزيائية تستخدم إشارة ساعة لتصل البتات في اللحظة الصحيحة."},
+  {q:"In Simplex transmission mode:",ar:"في وضع الإرسال Simplex:",lvl:"easy",o:["Both devices talk simultaneously","Communication is one-way only","Devices alternate talking","No communication occurs"],c:1,exp:"Simplex is one-way only, like a radio broadcast. Half-Duplex is two-way but one at a time.",expAr:"Simplex هو اتجاه واحد فقط، مثل البث الإذاعي. Half-Duplex اتجاهان لكن واحد في كل مرة."},
+  {q:"What is encapsulation?",ar:"ما هو التغليف (Encapsulation)؟",lvl:"medium",o:["Removing headers","Adding headers and trailers as data moves down the stack","Routing packets","Encrypting data"],c:1,exp:"Encapsulation is the process of adding headers (and sometimes trailers) to data as it moves down the OSI/TCP-IP stack.",expAr:"التغليف هو إضافة رؤوس (وأحيانًا ذيول) للبيانات أثناء تحركها لأسفل حزمة OSI/TCP-IP."},
+  {q:"The correct order of PDUs during encapsulation is:",ar:"الترتيب الصحيح لوحدات البيانات أثناء التغليف هو:",lvl:"hard",o:["Bits → Frame → Packet → Segment → Data","Data → Segment → Packet → Frame → Bits","Data → Packet → Segment → Frame → Bits","Frame → Segment → Packet → Data → Bits"],c:1,exp:"Encapsulation order: Data (L7-5) → Segment (L4) → Packet (L3) → Frame (L2) → Bits (L1).",expAr:"ترتيب التغليف: بيانات (7-5) ← مقطع (4) ← حزمة (3) ← إطار (2) ← بتات (1)."},
+  {q:"In Unicast transmission:",ar:"في إرسال Unicast:",lvl:"easy",o:["Data goes to all devices","Data goes to a specific group","Data goes from one sender to one specific receiver","Data goes to no one"],c:2,exp:"Unicast is one-to-one: a single sender to a single specific receiver. Only that specific device processes the data.",expAr:"Unicast هو واحد لواحد: مرسل واحد لمستقبل محدد واحد. فقط ذلك الجهاز يعالج البيانات."},
+  {q:"ARP request is an example of:",ar:"طلب ARP مثال على:",lvl:"medium",o:["Unicast","Broadcast","Multicast","Anycast"],c:1,exp:"ARP requests are broadcast (e.g., 'Who has IP 192.168.1.5?') so every device on the local network hears them.",expAr:"طلبات ARP بث عام (مثل: من يملك IP 192.168.1.5؟) ليسمعها كل جهاز على الشبكة المحلية."},
+  {q:"Multicast is:",ar:"Multicast هو:",lvl:"medium",o:["One-to-one","One-to-all","One-to-many (specific group)","None of the above"],c:2,exp:"Multicast is one-to-many: a single sender to a specific group of subscribed devices (e.g., IPTV, video conferencing).",expAr:"Multicast هو واحد لمجموعة: مرسل واحد لمجموعة أجهزة مشتركة (مثل IPTV والمؤتمرات المرئية)."},
+  {q:"A Collision Domain is:",ar:"نطاق التصادم (Collision Domain) هو:",lvl:"medium",o:["Where broadcasts are forwarded","The part of a network where packet collisions can occur","A type of cable","A protocol"],c:1,exp:"A Collision Domain is the part of a network where packet collisions can occur when two devices send at the same time on a shared segment.",expAr:"نطاق التصادم هو الجزء من الشبكة حيث يمكن أن تحدث تصادمات الحزم عند إرسال جهازين في نفس الوقت على مقطع مشترك."},
+  {q:"All ports on a hub are in:",ar:"كل منافذ الهَب في:",lvl:"medium",o:["Separate collision domains","The same collision domain","Different broadcast domains","No domain"],c:1,exp:"Every hub port is in the same collision domain, increasing the chance of collisions. Each switch port is a separate collision domain.",expAr:"كل منفذ هَب في نفس نطاق التصادم مما يزيد احتمالية التصادم. كل منفذ سويتش نطاق تصادم منفصل."},
+  {q:"How many layers does the TCP/IP model have?",ar:"كم عدد طبقات نموذج TCP/IP؟",lvl:"easy",o:["4","5","6","7"],c:0,exp:"The TCP/IP model has 4 layers: Application, Transport, Internet, Network Access.",expAr:"نموذج TCP/IP له 4 طبقات: التطبيقات، النقل، الإنترنت، الوصول للشبكة."},
+  {q:"Which OSI layers does the TCP/IP Application layer combine?",ar:"أي طبقات OSI تدمجها طبقة التطبيقات في TCP/IP؟",lvl:"medium",o:["Transport, Network, Data Link","Application, Presentation, Session","Network, Data Link, Physical","Only Application"],c:1,exp:"The TCP/IP Application layer combines OSI Application, Presentation, and Session layers.",expAr:"طبقة التطبيقات في TCP/IP تدمج طبقات OSI: التطبيقات والتقديم والجلسة."},
+  {q:"Which OSI layers does the TCP/IP Network Access layer combine?",ar:"أي طبقات OSI تدمجها طبقة الوصول للشبكة في TCP/IP؟",lvl:"medium",o:["Application, Presentation","Transport, Network","Data Link, Physical","Session, Transport"],c:2,exp:"The Network Access layer combines OSI Data Link and Physical layers.",expAr:"طبقة الوصول للشبكة تدمج طبقتَي ربط البيانات والفيزيائية في OSI."},
+  {q:"Which TCP/IP layer handles routing?",ar:"أي طبقة في TCP/IP تتولى التوجيه؟",lvl:"easy",o:["Application","Transport","Internet","Network Access"],c:2,exp:"The Internet layer (equivalent to OSI Network) handles addressing, packaging, and routing.",expAr:"طبقة الإنترنت (مكافئة لطبقة الشبكة في OSI) تتولى العنونة والتغليف والتوجيه."},
+  {q:"TCP/IP stands for:",ar:"TCP/IP تعني:",lvl:"easy",o:["Transmission Control Protocol / Internet Protocol","Transfer Control Process / Internal Protocol","Transport Connection Protocol / Internet Process","Total Control Protocol / Integrated Protocol"],c:0,exp:"TCP/IP = Transmission Control Protocol / Internet Protocol.",expAr:"TCP/IP = بروتوكول التحكم في الإرسال / بروتوكول الإنترنت."},
+  {q:"Which of these is an IPv4 address?",ar:"أي مما يلي عنوان IPv4؟",lvl:"easy",o:["2001:db8::1","192.168.1.1","FF:FF:FF:FF:FF:FF","www.google.com"],c:1,exp:"192.168.1.1 is an IPv4 address (32-bit). 2001:db8::1 is IPv6 and FF:FF:... is a MAC address.",expAr:"192.168.1.1 عنوان IPv4 (32-بت). 2001:db8::1 هو IPv6 وFF:FF:... عنوان MAC."},
+  {q:"Which of these is an IPv6 address?",ar:"أي مما يلي عنوان IPv6؟",lvl:"easy",o:["192.168.1.1","2001:db8::1","255.255.255.255","10.0.0.1"],c:1,exp:"2001:db8::1 is an IPv6 address (128-bit). IPv4 examples are 192.168.1.1 or 10.0.0.1.",expAr:"2001:db8::1 عنوان IPv6 (128-بت). أمثلة IPv4 هي 192.168.1.1 أو 10.0.0.1."},
+  {q:"ICANN is responsible for:",ar:"ICANN مسؤولة عن:",lvl:"medium",o:["Building routers","IP address allocation and domain name management","Designing cables","Writing web pages"],c:1,exp:"ICANN coordinates IP address allocation, the management of domain names, and assignment of other information.",expAr:"ICANN تنسق تخصيص عناوين IP وإدارة أسماء النطاقات وتعيين المعلومات الأخرى."}
+];
+// Ensure exactly 60
+console.log('Quiz questions:', QUIZ_QUESTIONS.length);
+
+/* ============================================================
+   DATA – Parts (lessons, flashcards, summary, exam)
+   ============================================================ */
+const DATA = { parts: {
+  part1: {
+    id:'part1', title:'Part 1: Networking Fundamentals & OSI Intro', pages:'Pages 1–13',
+    desc:'Networking basics, devices, topologies, network types, and the introduction to the OSI model.',
+    lessons:[
+      {title:'1.1 Introduction to Computer Networks',en:'A network is a set of devices (often referred to as nodes) connected by communication links. Computer Network: A collection of autonomous computers interconnected by a single technology. Two computers are interconnected if they can exchange information. Node: Any device (computer, printer, etc.) capable of sending and/or receiving data on a network.',ar:'الشبكة هي مجموعة من الأجهزة (تُسمى غالبًا العُقد) متصلة ببعضها عبر روابط اتصال. شبكة الحاسوب: مجموعة من الحواسيب المستقلة المترابطة بتقنية واحدة. يُعتبر حاسوبان مترابطين إذا كانا قادرين على تبادل المعلومات. العُقدة: أي جهاز (حاسوب، طابعة، إلخ) قادر على إرسال و/أو استقبال البيانات على الشبكة.',explain:'ببساطة، الشبكة هي مجموعة أجهزة متوصلة ببعض عشان يقدروا يتبادلوا بيانات. الحاسوبين بيبقوا مترابطين لو يقدروا يبعتوا ويستقبلوا معلومات من بعض. وأي جهاز في الشبكة سواء كمبيوتر أو طابعة أو موبايل بنسميه Node (عُقدة) طالما يقدر يبعت أو يستقبل داتا.',terms:[['Network','شبكة – مجموعة أجهزة متصلة'],['Node','عُقدة – أي جهاز على الشبكة'],['Communication Link','رابط اتصال – الوسيط بين الأجهزة'],['Autonomous','مستقل – كل حاسوب يعمل بذاته'],['Interconnected','مترابط – قادر على تبادل المعلومات']],exam:'احفظ تعريف الشبكة والعُقدة والفرق بين "مترابط" و"مجرد متصل".'},
+      {title:'1.2 Networking Fundamentals',en:'Medium: The physical path or channel used to carry data. Protocol: A set of standardized rules that govern how data is exchanged (e.g., TCP/IP). Network Operating System (NOS): The specialized OS running on servers that manages network resources (e.g., Windows Server, Linux, macOS Server). Client: A computer/device/program that requests data or services from a server. Server: A powerful computer/program that provides data, resources, or services to clients. Connectivity Device: Hardware used to connect network segments. LAN: A network confined to a small geographic area. WAN: A network that interconnects LANs over a large geographic area. Physical Topology: The actual physical layout of a network\u2019s hardware. Logical Topology: The path that data actually takes.',ar:'الوسط (Medium): المسار المادي أو القناة المستخدمة لحمل البيانات. البروتوكول (Protocol): مجموعة قواعد موحدة تحكم كيفية تبادل البيانات (مثل TCP/IP). نظام تشغيل الشبكة (NOS): نظام التشغيل المتخصص الذي يعمل على الخوادم ويدير موارد الشبكة. العميل (Client): جهاز أو برنامج يطلب بيانات أو خدمات من خادم. الخادم (Server): جهاز قوي يقدم البيانات والموارد والخدمات للعملاء. جهاز الاتصال: جهاز يستخدم لربط أجزاء الشبكة. LAN: شبكة محصورة في منطقة جغرافية صغيرة. WAN: شبكة تربط شبكات LAN عبر منطقة واسعة. الطوبولوجيا المادية: التخطيط المادي الفعلي للشبكة. الطوبولوجيا المنطقية: المسار الفعلي الذي تسلكه البيانات.',explain:'الـ Medium هو "الطريق" اللي البيانات بتمشي فيه. الـ Protocol هو "اللغة" اللي الأجهزة بتتكلم بيها. الـ NOS هو نظام التشغيل اللي بيشغل السيرفر. الـ Client بيطلب، والـ Server بيقدم. أجهزة الاتصال زي السويتش والراوتر بتربط الأجزاء ببعض. الـ LAN شبكة صغيرة، والـ WAN شبكة كبيرة. الطوبولوجيا المادية هي الشكل الحقيقي للكابلات، والمنطقية هي المسار اللي الداتا بتمشي فيه.',terms:[['Medium','الوسط الناقل للبيانات'],['Protocol','بروتوكول – قواعد تبادل البيانات'],['NOS','نظام تشغيل الشبكة'],['Client','العميل – طالب الخدمة'],['Server','الخادم – مقدم الخدمة'],['LAN','شبكة محلية صغيرة'],['WAN','شبكة واسعة النطاق'],['Topology','طوبولوجيا – شكل/تخطيط الشبكة']],exam:'ركّز على الفرق بين Physical Topology وLogical Topology، وتعريف الـ Protocol والـ Medium.'},
+      {title:'1.3 Networking Devices',en:'Equipment that connects directly to a network segment is referred to as a device. Two classifications: End-user devices (computers, printers, scanners, smartphones, tablets) and Network devices (switches, routers, wireless access points, firewalls). NIC: A hardware component that connects a computer to a network (LAN). HUB: Connects a group of hosts (broadcasts to all ports). Switch: Connects multiple end-user devices within the same LAN; forwards data only to the specific destination device using MAC address. Router: Connects different networks together; uses IP address to determine the best path.',ar:'الأجهزة التي تتصل مباشرة بجزء من الشبكة تسمى أجهزة. تصنيفان: أجهزة المستخدم النهائي (حاسوب، طابعة، ماسح، هاتف ذكي، تابلت) وأجهزة الشبكة (سويتش، راوتر، نقطة وصول لاسلكية، جدار حماية). كارت الشبكة (NIC): مكوّن مادي يربط الحاسوب بالشبكة. الهَب (HUB): يربط مجموعة من المضيفين ويبث البيانات لكل المنافذ. السويتش (Switch): يربط أجهزة المستخدم النهائي داخل نفس الـ LAN ويوجه البيانات فقط للجهاز المحدد باستخدام عنوان MAC. الراوتر (Router): يربط شبكات مختلفة ببعضها ويستخدم عنوان IP لتحديد أفضل مسار.',explain:'أجهزة الشبكة نوعين: أجهزة المستخدم النهائي زي الكمبيوتر والطابعة، وأجهزة الشبكة اللي بتربط الأجهزة ببعض زي السويتش والراوتر. الـ NIC هو كارت الشبكة اللي بيركب في الكمبيوتر عشان يتوصل بالشبكة. الـ Hub غبي – بيبعت البيانات لكل الأجهزة. الـ Switch ذكي – بيبعت البيانات للجهاز المقصود بس عن طريق الـ MAC address. الـ Router بيربط شبكات مختلفة ببعض وبيستخدم الـ IP address عشان يلاقي أفضل طريق.',terms:[['NIC','كارت واجهة الشبكة'],['Hub','موزع – يبث لكل المنافذ'],['Switch','سويتش – يوجه حسب MAC'],['Router','راوتر – يربط الشبكات حسب IP'],['MAC Address','عنوان مادي ثابت للجهاز'],['IP Address','عنوان منطقي متغير']],exam:'مهم جدًا: الفرق بين Hub وSwitch وRouter، والفرق بين MAC وIP.'},
+      {title:'1.4 Why Network Computers?',en:'One of the primary functions of a network is to increase productivity by linking computers and computer networks. Corporate networks are divided into user groups based on employee roles. Remote-access locations connect to the corporate LAN using a WAN service. Resource-Sharing: Data and Applications (email, shared databases, cloud software), Resources (cameras, scanners, printers), Network Storage (DAS, NAS, SAN), Backup Devices.',ar:'من أهم وظائف الشبكة زيادة الإنتاجية بربط الحواسيب والشبكات. شبكات الشركات تنقسم لمجموعات مستخدمين حسب الأدوار. المواقع البعيدة تتصل بشبكة الشركة عبر خدمة WAN. فوائد مشاركة الموارد: البيانات والتطبيقات (بريد إلكتروني، قواعد بيانات مشتركة، برامج سحابية)، الموارد (الكاميرات والماسحات والطابعات)، تخزين الشبكة (DAS وNAS وSAN)، أجهزة النسخ الاحتياطي.',explain:'ليه بنعمل شبكات؟ عشان نزوّد الإنتاجية ونخلي الناس تشتغل مع بعض. أهم فايدة للشبكة هي مشاركة الموارد: الملفات والبرامج، الأجهزة زي الطابعات والكاميرات، التخزين المشترك، وأجهزة النسخ الاحتياطي عشان لو حصل مشكلة نقدر نسترجع البيانات.',terms:[['Productivity','الإنتاجية'],['Resource Sharing','مشاركة الموارد'],['DAS','تخزين مباشر متصل بالحاسوب'],['NAS','تخزين متصل بالشبكة'],['SAN','شبكة تخزين مخصصة عالية السرعة'],['Backup','نسخ احتياطي']],exam:'احفظ أنواع التخزين الثلاثة (DAS, NAS, SAN) وفوائد مشاركة الموارد.'},
+      {title:'1.5 Networking Applications',en:'Networking applications are computer programs that run over networks. Network User Applications: E-mail, Web browsers, Instant Messaging and Collaboration (Teams, Slack, Zoom), Databases. Categories: Batch applications (FTP, TFTP), Interactive applications (database queries), Real-time applications (VoIP, video; QoS required). Network Administration Applications: Network monitoring (protocol analyzers, sniffers) and Network management (device inventory, remote control, license compliance, notifications).',ar:'تطبيقات الشبكة هي برامج حاسوب تعمل عبر الشبكات. تطبيقات المستخدم تشمل: البريد، المتصفحات، المراسلة الفورية (Teams وSlack وZoom)، قواعد البيانات. الفئات: تطبيقات الدفعات (FTP وTFTP)، التطبيقات التفاعلية (قواعد البيانات)، التطبيقات الفورية (VoIP والفيديو؛ تتطلب QoS). تطبيقات إدارة الشبكة: مراقبة الشبكة وإدارة الشبكة.',explain:'تطبيقات الشبكة هي البرامج اللي بتشتغل على الشبكة. في 3 فئات: Batch زي FTP، Interactive زي البحث في قاعدة بيانات، Real-time زي المكالمات والفيديو. وفي تطبيقات لإدارة الشبكة نفسها: Monitoring وManagement.',terms:[['Batch Application','تطبيق دفعات – يكتمل ذاتيًا'],['Interactive Application','تطبيق تفاعلي – يطلب وينتظر رد'],['Real-time Application','تطبيق فوري – حساس للوقت'],['QoS','جودة الخدمة'],['Protocol Analyzer','محلل بروتوكول'],['Sniffer','أداة التقاط بيانات الشبكة']],exam:'مهم: تصنيف التطبيقات الثلاثة (Batch / Interactive / Real-time) مع أمثلة، والفرق بين Monitoring وManagement.'},
+      {title:'1.6 Characteristics of a Network',en:'Networks are characterized by: Speed (data rate), Cost (components, installation, maintenance), Security (how secure the network and data are), Availability (likelihood the network is available when required), Scalability (how well it accommodates more users/data), Reliability (dependability of devices), Topology (design of the network; physical and logical).',ar:'تتميز الشبكات بما يلي: السرعة، التكلفة، الأمان، التوافر، قابلية التوسع، الموثوقية، الطوبولوجيا.',explain:'الـ 7 خصائص اللي بنقيس بيها الشبكة: السرعة، التكلفة، الأمان، التوافر، قابلية التوسع، الموثوقية، الطوبولوجيا. دي حاجات لو فهمتها هتجاوب صح على أي سؤال عن تقييم الشبكات.',terms:[['Speed / Data Rate','سرعة نقل البيانات'],['Availability','التوافر'],['Scalability','قابلية التوسع'],['Reliability','الموثوقية'],['Security','الأمان']],exam:'احفظ السبع خصائص بالترتيب وتعريف كل واحدة.'},
+      {title:'1.7 Physical Topology',en:'Physical Topology refers to the actual physical layout of cables, devices, and connections. Bus: all devices on one central backbone cable; terminators at both ends. Ring: devices in a closed loop; data travels in one direction. Star: all devices connect to a central device (switch/hub); most common in modern LANs. Mesh: every device connected to every other (Full Mesh) or some (Partial Mesh).',ar:'الطوبولوجيا المادية هي التخطيط المادي الفعلي للكابلات والأجهزة. Bus: كل الأجهزة على كابل مركزي واحد مع طرفيات. Ring: الأجهزة في حلقة مغلقة. Star: كل الأجهزة تتصل بجهاز مركزي؛ الأكثر شيوعًا في الشبكات المحلية الحديثة. Mesh: كل جهاز متصل بكل جهاز آخر (Full Mesh) أو ببعضها (Partial Mesh).',explain:'الطوبولوجيا هي شكل توصيل الشبكة. Bus: كابل واحد طويل – رخيص بس لو اتقطع الشبكة كلها تقع. Ring: حلقة مقفولة – منظمة بس لو جهاز وقع الحلقة كلها تقع. Star: كل الأجهزة على سويتش في النص – دي الأكثر شيوعًا. Mesh: كل جهاز متوصل بكل الأجهزة – الأقوى والأغلى.',terms:[['Bus Topology','طوبولوجيا الناقل'],['Ring Topology','طوبولوجيا الحلقة'],['Star Topology','طوبولوجيا النجمة'],['Mesh Topology','طوبولوجيا متداخلة'],['Backbone','الكابل الرئيسي'],['Terminator','طرفي']],exam:'مقارنة كاملة بين الأنواع الأربعة (مميزات وعيوب) مهمة جدًا.'},
+      {title:'1.8 Types of Computer Networks',en:'LAN: small area. Uses CAT 5e/6 or Fiber. Speeds 1–10 Gbps+. MAN: spans 5–50 km; owned by a single organization or large ISP. WAN: country-wide or worldwide; contains LANs and MANs; uses fiber backbone, MPLS, 4G/5G. Best example: the Internet. WLAN: LAN using Wi-Fi radio. PAN: personal use, range within 10 meters; Bluetooth, NFC, USB. SAN: high-speed dedicated storage network; Fibre Channel or iSCSI.',ar:'LAN: منطقة صغيرة. MAN: من 5 إلى 50 كم. WAN: على مستوى الدولة أو العالم؛ الإنترنت أفضل مثال. WLAN: LAN لاسلكية. PAN: للاستخدام الشخصي، أقل من 10 أمتار؛ Bluetooth وNFC وUSB. SAN: شبكة تخزين مخصصة عالية السرعة.',explain:'أنواع الشبكات حسب الحجم: LAN صغيرة، MAN أكبر شوية، WAN أكبر حاجة (الإنترنت). WLAN هي LAN لاسلكية. PAN شبكة شخصية جدًا. SAN شبكة مخصصة للتخزين السريع.',terms:[['LAN','شبكة محلية'],['MAN','شبكة إقليمية'],['WAN','شبكة واسعة النطاق'],['WLAN','شبكة محلية لاسلكية'],['PAN','شبكة شخصية'],['SAN','شبكة تخزين مخصصة']],exam:'ركّز على الفروق: النطاق الجغرافي، السرعة، الملكية، وأمثلة لكل نوع.'},
+      {title:'2.1 Introduction to the OSI Model',en:'The OSI (Open Systems Interconnection) Model is a conceptual framework created by ISO to describe how data is transmitted using a seven-layer architecture. It divides communication into 7 layers: Application, Presentation, Session, Transport, Network, Data Link, Physical. Data Units: Data (L7-5), Segments (L4), Packets (L3), Frames (L2), Bits (L1).',ar:'نموذج OSI هو إطار مفاهيمي أنشأته ISO لوصف كيفية نقل البيانات باستخدام معمارية من سبع طبقات: التطبيقات، التقديم، الجلسة، النقل، الشبكة، ربط البيانات، الفيزيائية. وحدات البيانات: Data، Segments، Packets، Frames، Bits.',explain:'قبل OSI كل شركة كانت بتعمل شبكات بطريقتها. فجت ISO وعملت نموذج OSI اللي بيقسم الاتصال لـ 7 طبقات. الطبقات من فوق لتحت: Application – Presentation – Session – Transport – Network – Data Link – Physical. كل طبقة بتبني وحدة بيانات مختلفة.',terms:[['OSI','نموذج الربط بين الأنظمة المفتوحة'],['ISO','المنظمة الدولية للمعايير'],['PDU','وحدة البيانات لكل طبقة'],['Encapsulation','التغليف'],['Layer','طبقة']],exam:'احفظ ترتيب الطبقات السبع ووحدات البيانات (PDU) لكل طبقة.'}
+    ],
+    flashcards:[
+      {q:'Define a computer network.',a:'A collection of autonomous computers interconnected by a single technology that can exchange information.',ar:'مجموعة من الحواسيب المستقلة المترابطة بتقنية واحدة قادرة على تبادل المعلومات.'},
+      {q:'What is a Node in a network?',a:'Any device (computer, printer, etc.) capable of sending and/or receiving data on a network.',ar:'أي جهاز قادر على إرسال و/أو استقبال البيانات على الشبكة.'},
+      {q:'Define Protocol and give an example.',a:'A set of standardized rules that govern how data is exchanged between devices. Example: TCP/IP.',ar:'مجموعة قواعد موحدة تحكم تبادل البيانات. مثال: TCP/IP.'},
+      {q:'Difference between Physical and Logical Topology?',a:'Physical topology is the actual physical layout of hardware. Logical topology is the path data actually takes.',ar:'المادية هي التخطيط المادي الفعلي. المنطقية هي المسار الفعلي للبيانات.'},
+      {q:'What is a LAN and what is a WAN?',a:'LAN is a network confined to a small area. WAN interconnects LANs over a large geographic area.',ar:'LAN شبكة صغيرة. WAN تربط LANs عبر منطقة واسعة.'},
+      {q:'Difference between a Hub and a Switch.',a:'A Hub broadcasts data to all ports. A Switch forwards data only to the specific destination device using its MAC address.',ar:'الهَب يبث لكل المنافذ. السويتش يوجه فقط للجهاز المقصود باستخدام MAC.'},
+      {q:'What is the function of a Router?',a:'A Router connects different networks and uses the destination IP address to determine the best path for data.',ar:'الراوتر يربط الشبكات المختلفة ويستخدم IP الوجهة لتحديد أفضل مسار.'},
+      {q:'What is a NIC?',a:'Network Interface Card – a hardware component that connects a computer to a network (LAN).',ar:'كارت واجهة الشبكة – مكوّن مادي يربط الحاسوب بالشبكة المحلية.'},
+      {q:'List the resource-sharing functions of networks.',a:'Data and applications, resources (input/output devices), network storage (DAS, NAS, SAN), and backup devices.',ar:'البيانات والتطبيقات، الموارد، تخزين الشبكة (DAS, NAS, SAN)، وأجهزة النسخ الاحتياطي.'},
+      {q:'Differentiate Batch, Interactive, and Real-time applications.',a:'Batch: starts and completes on its own (FTP). Interactive: requests data and waits (DB queries). Real-time: time-critical, needs QoS (VoIP, video).',ar:'الدفعات: يكتمل ذاتيًا (FTP). التفاعلي: يطلب وينتظر (قواعد البيانات). الفوري: حساس للوقت ويحتاج QoS (VoIP).'},
+      {q:'List the characteristics of a network.',a:'Speed, Cost, Security, Availability, Scalability, Reliability, Topology.',ar:'السرعة، التكلفة، الأمان، التوافر، قابلية التوسع، الموثوقية، الطوبولوجيا.'},
+      {q:'Explain Bus topology and its main disadvantage.',a:'All devices connect to a single backbone cable with terminators. Disadvantage: a single break brings down the entire network.',ar:'كل الأجهزة على كابل مركزي واحد مع طرفيات. العيب: قطع واحد يدمر الشبكة كلها.'},
+      {q:'Why is Star topology the most common in modern LANs?',a:'It is easy to install and troubleshoot; a single cable failure affects only one device.',ar:'سهلة التركيب والصيانة؛ فشل كابل واحد يؤثر على جهاز واحد فقط.'},
+      {q:'What is Mesh topology? Pros and cons.',a:'Every device connected to every other (full) or some (partial). Pros: highly reliable, no collisions, secure. Cons: expensive, huge cabling.',ar:'كل جهاز متصل بكل الأجهزة أو ببعضها. المميزات: موثوقية عالية ولا تصادمات وآمنة. العيوب: مكلفة وكابلات ضخمة.'},
+      {q:'What is a MAN and what is its range?',a:'Metropolitan Area Network – spans 5–50 km, connecting multiple LANs. Owned by a single organization or large ISP.',ar:'شبكة إقليمية – تمتد من 5 إلى 50 كم، تربط عدة LANs.'},
+      {q:'What is a PAN? Give examples.',a:'Personal Area Network – range within 10 meters, using Bluetooth, NFC, or USB. Example: phone to earbuds.',ar:'شبكة شخصية – أقل من 10 أمتار، بالبلوتوث أو NFC أو USB. مثال: الموبايل بالسماعة.'},
+      {q:'What is a SAN and what technology does it use?',a:'Storage Area Network – a high-speed network connecting servers to dedicated storage, using Fibre Channel or iSCSI.',ar:'شبكة تخزين مخصصة عالية السرعة عبر Fibre Channel أو iSCSI.'},
+      {q:'Why was the OSI model created?',a:'Because early networks were vendor-specific (incompatible). OSI provides an open layered framework enabling compatibility.',ar:'لأن الشبكات القديمة كانت خاصة بكل بائع. OSI يوفر إطارًا مفتوحًا يتيح التوافق.'},
+      {q:'Name the 7 OSI layers from top to bottom.',a:'Application, Presentation, Session, Transport, Network, Data Link, Physical.',ar:'التطبيقات، التقديم، الجلسة، النقل، الشبكة، ربط البيانات، الفيزيائية.'},
+      {q:'What is the PDU for each OSI layer?',a:'L7–L5: Data. L4: Segments/Datagrams. L3: Packets. L2: Frames. L1: Bits.',ar:'ط7–ط5: بيانات. ط4: مقاطع/مخططات. ط3: حزم. ط2: إطارات. ط1: بتات.'}
+    ],
+    summary:[
+      {en:'A network is a set of devices (nodes) connected by communication links to exchange information.',ar:'الشبكة مجموعة أجهزة متصلة بروابط اتصال لتبادل المعلومات.'},
+      {en:'A Protocol is a set of standardized rules governing data exchange (e.g., TCP/IP).',ar:'البروتوكول قواعد موحدة تحكم تبادل البيانات (مثل TCP/IP).'},
+      {en:'Medium is the physical path carrying data: copper, fiber, or wireless.',ar:'الوسط هو المسار المادي للبيانات: نحاس أو ألياف أو لاسلكي.'},
+      {en:'NOS is the specialized server OS that manages network resources.',ar:'نظام تشغيل الشبكة هو نظام الخادم المتخصص لإدارة موارد الشبكة.'},
+      {en:'Client requests services; Server provides them.',ar:'العميل يطلب الخدمات، والخادم يقدمها.'},
+      {en:'Physical topology = actual hardware layout; Logical topology = actual data path.',ar:'الطوبولوجيا المادية = تخطيط الأجهزة الفعلي؛ المنطقية = مسار البيانات الفعلي.'},
+      {en:'End-user devices vs Network devices (switches, routers, WAPs, firewalls).',ar:'أجهزة المستخدم النهائي مقابل أجهزة الشبكة.'},
+      {en:'NIC connects a computer to the LAN.',ar:'كارت الشبكة يربط الحاسوب بالشبكة المحلية.'},
+      {en:'Hub broadcasts to all ports; Switch forwards by MAC only to the destination.',ar:'الهَب يبث لكل المنافذ؛ السويتش يوجه حسب MAC للجهاز المقصود فقط.'},
+      {en:'Router connects different networks and chooses the best path using IP addresses.',ar:'الراوتر يربط الشبكات المختلفة ويختار أفضل مسار باستخدام IP.'},
+      {en:'Resource sharing includes data/apps, devices, network storage (DAS/NAS/SAN), and backups.',ar:'مشاركة الموارد تشمل البيانات والتطبيقات والأجهزة والتخزين والنسخ الاحتياطي.'},
+      {en:'Batch apps complete alone (FTP); Interactive apps wait for reply; Real-time apps need QoS (VoIP).',ar:'تطبيقات الدفعات تكتمل وحدها؛ التفاعلية تنتظر الرد؛ الفورية تحتاج QoS.'},
+      {en:'Network characteristics: Speed, Cost, Security, Availability, Scalability, Reliability, Topology.',ar:'خصائص الشبكة: السرعة، التكلفة، الأمان، التوافر، التوسع، الموثوقية، الطوبولوجيا.'},
+      {en:'Bus topology: single backbone, cheap, but a single break kills the network.',ar:'طوبولوجيا الناقل: كابل واحد، رخيصة، لكن قطع واحد يدمر الشبكة.'},
+      {en:'Ring topology: closed loop, orderly data, but one failure breaks the ring.',ar:'طوبولوجيا الحلقة: حلقة مغلقة، بيانات منظمة، لكن فشل واحد يكسرها.'},
+      {en:'Star topology: central device, easy to troubleshoot, most common in modern LANs.',ar:'طوبولوجيا النجمة: جهاز مركزي، سهلة الصيانة، الأكثر شيوعًا.'},
+      {en:'Mesh topology: most reliable and secure but most expensive and hardest to set up.',ar:'الطوبولوجيا المتداخلة: الأكثر موثوقية وأمانًا لكن الأغلى والأصعب.'},
+      {en:'LAN (small) < MAN (city, 5–50 km) < WAN (country/world; Internet is the best example).',ar:'LAN < MAN < WAN (الإنترنت أفضل مثال).'},
+      {en:'WLAN uses Wi-Fi; PAN uses Bluetooth/NFC/USB within 10 m; SAN is dedicated high-speed storage.',ar:'WLAN تستخدم Wi-Fi؛ PAN بلوتوث/NFC/USB؛ SAN تخزين مخصص عالي السرعة.'},
+      {en:'OSI has 7 layers (Application to Physical) created by ISO to standardize networking.',ar:'OSI سبع طبقات أنشأتها ISO لتوحيد الشبكات.'}
+    ],
+    exam:[]
+  },
+
+  part2: {
+    id:'part2', title:'Part 2: OSI Model Layers', pages:'Pages 14–26',
+    desc:'Deep dive into each of the seven OSI layers: Application, Presentation, Session, Transport, Network, Data Link, and Physical.',
+    lessons:[
+      {title:'2.2 Layer 7 – The Application Layer',en:'The Application Layer is the seventh and highest layer. It is closest to the user and provides network services directly to applications like web browsers, email clients, and file transfer tools. User Services: Web browsing (HTTP/HTTPS), Email (SMTP, POP3, IMAP), File transfer (FTP, SFTP), Remote login (Telnet, SSH), Domain names (DNS), Network management (SNMP), Dynamic addressing (DHCP).',ar:'طبقة التطبيقات هي السابعة والأعلى. وهي الأقرب للمستخدم وتقدم خدمات الشبكة مباشرة للتطبيقات. خدمات المستخدم: تصفح الويب (HTTP/HTTPS)، البريد (SMTP, POP3, IMAP)، نقل الملفات (FTP, SFTP)، الدخول عن بُعد (Telnet, SSH)، أسماء النطاقات (DNS)، إدارة الشبكة (SNMP)، العنونة الديناميكية (DHCP).',explain:'طبقة التطبيقات هي اللي بنشوفها كمستخدمين. لكن خد بالك: كروم نفسه مش طبقة التطبيقات، البروتوكول هو طبقة التطبيقات. الطبقة دي بتوفر خدمات زي تصفح الويب والإيميل ونقل الملفات والدخول عن بعد وإدارة الشبكة.',terms:[['Application Layer','طبقة التطبيقات – الطبقة السابعة'],['HTTP/HTTPS','بروتوكولات الويب (80/443)'],['SMTP','إرسال البريد (25)'],['POP3/IMAP','استقبال البريد (110/143)'],['DNS','ترجمة أسماء النطاقات (53)'],['DHCP','تعيين IP تلقائي (67/68)'],['SSH','دخول آمن عن بُعد (22)']],exam:'احفظ البروتوكولات وأرقام المنافذ (Ports) الخاصة بكل خدمة. دي أسئلة متكررة جدًا.'},
+      {title:'2.3 Layer 6 – The Presentation Layer',en:'The Presentation Layer acts as the "translator" of the network. It ensures data is in a format both devices can understand. Main jobs: Translation, Character Encoding (ASCII, Unicode, EBCDIC), Data Compression (ZIP, JPEG, MP3), Encryption/Decryption (SSL/TLS, VPN), and Data Representation Standards.',ar:'طبقة التقديم تعمل كـ"مترجم" الشبكة. تضمن أن البيانات بصيغة يفهمها كلا الجهازين. المهام الرئيسية: الترجمة، ترميز الأحرف، ضغط البيانات، التشفير وفك التشفير، ومعايير تمثيل البيانات.',explain:'طبقة التقديم هي المترجم – بتخلي البيانات مفهومة للطرفين مهما اختلفت أجهزتهم. كمان بتعمل ضغط للبيانات عشان توفر وقت وباندويث. وبتعمل تشفير (Encryption) عشان تحمي البيانات – زي HTTPS.',terms:[['Presentation Layer','طبقة التقديم – المترجم'],['ASCII / Unicode','ترميز الأحرف'],['Compression','ضغط البيانات'],['Encryption','التشفير'],['SSL/TLS','بروتوكولات تشفير الويب'],['JPEG/MP3/MP4','صيغ بيانات مضغوطة']],exam:'ركّز على الوظائف الأربع: Translation, Encoding, Compression, Encryption.'},
+      {title:'2.4 Layer 5 – The Session Layer',en:'The Session Layer is the "dialogue manager" – controls the opening, closing, and security of communication channels. Main jobs: Session Lifecycle (Establishment, Maintenance, Termination), Authentication & Security, Synchronization/Checkpoints, Dialog Control (Half-Duplex: alternating; Full-Duplex: simultaneous).',ar:'طبقة الجلسة هي "مدير الحوار" – تتحكم في فتح وإغلاق وأمان قنوات الاتصال. المهام: دورة حياة الجلسة (الإنشاء، الصيانة، الإنهاء)، المصادقة والأمان، التزامن/نقاط التحقق، التحكم في الحوار (Half-Duplex: بالتناوب؛ Full-Duplex: متزامن).',explain:'طبقة الجلسة هي اللي بتنظم "المحادثة" بين جهازين. زي لما تعمل تسجيل دخول في موقع: الجلسة بتبدأ من تسجيل الدخول وتنتهي لما تعمل خروج. كمان بتعمل checkpoints عشان لو التحميل فصل يكمل من نفس النقطة.',terms:[['Session','جلسة – محادثة بين جهازين'],['Authentication','التحقق من الهوية'],['Checkpoint','نقطة تحقق'],['Half-Duplex','نصف مزدوج – بالتناوب'],['Full-Duplex','كامل مزدوج – متزامن'],['RPC','استدعاء إجراء عن بُعد']],exam:'احفظ دورة حياة الجلسة والفرق بين Half-Duplex وFull-Duplex.'},
+      {title:'2.5 Layer 4 – The Transport Layer',en:'The Transport Layer delivers data from one process to another. Main jobs: Segmentation (source port, destination port, sequence number, payload), Process-to-Process Delivery (Ports: 80 HTTP, 443 HTTPS, 25 SMTP, 53 DNS), TCP vs UDP (TCP: connection-oriented, reliable; UDP: connectionless, unreliable), Segmentation & Reassembly, Connection Control (TCP 3-way handshake: SYN, SYN-ACK, ACK), Flow Control (windowing), Error Control (checksums), Multiplexing (many apps use different ports).',ar:'طبقة النقل توصل البيانات من عملية إلى أخرى. المهام: التقسيم، التوصيل من عملية لعملية (المنافذ: 80 HTTP، 443 HTTPS، 25 SMTP، 53 DNS)، TCP مقابل UDP، التقسيم وإعادة التجميع، التحكم في الاتصال، التحكم في التدفق، التحكم في الأخطاء، التعددية.',explain:'طبقة النقل هي اللي بتوصل الداتا للتطبيق الصح مش بس للجهاز الصح. عندنا بروتوكولين: TCP – موثوق وبيه مصافحة ثلاثية. UDP – سريع بس مش مضمون. والمنافذ (Ports) هي اللي بتحدد التطبيق.',terms:[['Segment / Datagram','مقطع TCP / مخطط UDP'],['Port','منفذ – معرف التطبيق'],['TCP','بروتوكول موثوق'],['UDP','بروتوكول سريع بلا اتصال'],['3-Way Handshake','المصافحة الثلاثية'],['Flow Control','التحكم في التدفق'],['Multiplexing','تعدد الإرسال']],exam:'مقارنة TCP vs UDP، المصافحة الثلاثية، أرقام المنافذ. دي أهم نقطة في الباب.'},
+      {title:'2.6 Layer 3 – The Network Layer',en:'The Network Layer manages data transmission between hosts across different networks using logical addressing and path finding. Main jobs: Packets, Logical Addressing (IPv4, IPv6), Routing (routers examine destination IP), Hardware (Routers and Layer 3 Switches), Inter-Networking, Fragmentation, Protocols (IP, ICMP, ARP, OSPF/BGP/RIP).',ar:'طبقة الشبكة تدير نقل البيانات بين المضيفين عبر شبكات مختلفة باستخدام العنونة المنطقية وإيجاد المسار. المهام: الحزم، العنونة المنطقية، التوجيه، الأجهزة، الربط بين الشبكات، التجزئة، البروتوكولات.',explain:'طبقة الشبكة هي المسؤولة عن توصيل الحزم بين الشبكات المختلفة – يعني بتخلي الإنترنت يشتغل. بتستخدم عناوين IP. الراوتر هو الجهاز الأساسي هنا. الـ ARP بيربط IP بـ MAC. الـ ICMP بيستخدم في ping.',terms:[['Packet','حزمة – وحدة بيانات الطبقة 3'],['IP Address','عنوان منطقي متغير'],['Routing','التوجيه'],['Router','جهاز التوجيه'],['ICMP','بروتوكول رسائل الأخطاء'],['ARP','ربط IP بـ MAC'],['Fragmentation','تجزئة الحزم']],exam:'الفرق بين IP وMAC، وظيفة الراوتر، بروتوكولات الطبقة. مهم جدًا.'},
+      {title:'2.7 Layer 2 – The Data Link Layer',en:'The Data Link Layer acts as a bridge between physical hardware and logical network. Main jobs: Framing, MAC Addressing, Two Sublayers (LLC: flow/error control; MAC: media access + hardware addressing), Error Control, Flow Control, Access Control.',ar:'طبقة ربط البيانات جسر بين العتاد المادي والشبكة المنطقية. المهام: التأطير، عنونة MAC، طبقتان فرعيتان (LLC وMAC)، التحكم في الأخطاء، التحكم في التدفق، التحكم في الوصول.',explain:'طبقة ربط البيانات هي اللي بتغلف الحزمة في "إطار" وبتضيف عناوين MAC. عندها طبقتين فرعيتين: LLC وMAC. الأجهزة: السويتش والجسر.',terms:[['Frame','إطار – وحدة بيانات الطبقة 2'],['MAC Address','عنوان مادي ثابت'],['LLC','تحكم منطقي في الرابط'],['MAC Sublayer','تحكم في الوصول للوسط'],['MTU','أقصى وحدة نقل'],['Collision','تصادم']],exam:'ركّز على الطبقتين الفرعيتين LLC وMAC، ومفهوم الـ Frame والـ MAC Address.'},
+      {title:'2.8 Layer 1 – The Physical Layer',en:'The Physical Layer sends raw bits (0s and 1s) over copper, fiber, or air. Main jobs: Sends raw bits, Uses hardware (Hubs, Repeaters, Modems, Cables), Keeps bits in sync, Controls speed (bit rate), Defines network layout (topology), Sets transmission mode (Simplex, Half-Duplex, Full-Duplex).',ar:'الطبقة الفيزيائية تنقل البتات الخام عبر النحاس أو الألياف أو الهواء. المهام: إرسال البتات، استخدام العتاد، تزامن البتات، التحكم في السرعة، تحديد التخطيط، تحديد وضع الإرسال.',explain:'الطبقة الفيزيائية هي اللي بتتعامل مع "الكهربا" – بتبعت بتات 0 و1 على الكابل أو الألياف أو الهوا. الأجهزة: Hub وRepeater وModem. بتحدد السرعة ووضع الإرسال.',terms:[['Bit','بت – 0 أو 1'],['Bit Rate','معدل البت'],['Simplex','اتجاه واحد'],['Half-Duplex','اتجاهان بالتناوب'],['Full-Duplex','اتجاهان متزامنان'],['Repeater','مكرر'],['Modem','مودم']],exam:'احفظ أوضاع الإرسال الثلاثة وأجهزة الطبقة.'},
+      {title:'2.9 OSI Model Summary',en:'L7 Application: user interface (HTTP/HTTPS, FTP, SMTP, DNS). L6 Presentation: translation, encryption, compression. L5 Session: establish/manage/terminate sessions. L4 Transport: end-to-end, reliability (TCP, UDP). L3 Network: logical addressing and routing (IPv4, IPv6, ICMP, OSPF). L2 Data Link: framing, MAC addressing (Ethernet, Wi-Fi). L1 Physical: raw bitstream (Cat6, Fiber, Bluetooth).',ar:'L7 التطبيقات: واجهة المستخدم. L6 التقديم: الترجمة والتشفير والضغط. L5 الجلسة: إنشاء وإدارة وإنهاء الجلسات. L4 النقل: التوصيل من طرف لطرف. L3 الشبكة: العنونة المنطقية والتوجيه. L2 ربط البيانات: التأطير وعنونة MAC. L1 الفيزيائية: البتات الخام.',explain:'الملخص ده أهم حاجة للمراجعة السريعة. كل طبقة ووظيفتها وأمثلة البروتوكولات. ركز على الأمثلة لأنها بتيجي كتير في الامتحانات.',terms:[['Protocol','بروتوكول'],['Ethernet 802.3','معيار الشبكة السلكية'],['Wi-Fi 802.11','معيار الشبكة اللاسلكية'],['PPP','بروتوكول نقطة لنقطة'],['OSPF/BGP','بروتوكولات التوجيه']],exam:'احفظ جدول الملخص بالكامل – الطبقة + الوظيفة + الأمثلة.'}
+    ],
+    flashcards:[
+      {q:'Main job of the Application Layer?',a:'Provides network services directly to applications (web browsers, email clients, file transfer) and acts as the window between the user and the network.',ar:'تقدم خدمات الشبكة مباشرة للتطبيقات وتعمل كنافذة بين المستخدم والشبكة.'},
+      {q:'Application Program vs Application Layer?',a:'Application Program is the software (Chrome, Outlook). Application Layer is the protocols those programs use (HTTP, SMTP).',ar:'برنامج التطبيق هو البرمجية. طبقة التطبيقات هي البروتوكولات المستخدمة.'},
+      {q:'What ports do HTTP and HTTPS use?',a:'HTTP uses port 80; HTTPS uses port 443.',ar:'HTTP يستخدم 80؛ HTTPS يستخدم 443.'},
+      {q:'Main jobs of the Presentation Layer?',a:'Translation (format conversion), Character Encoding, Data Compression, and Encryption/Decryption.',ar:'الترجمة، ترميز الأحرف، الضغط، والتشفير/فك التشفير.'},
+      {q:'Examples of Presentation Layer formats?',a:'Text: ASCII, Unicode, UTF-8, EBCDIC. Images: JPEG, PNG, GIF, BMP. Audio: MP3, WAV. Video: MP4, AVI. Compression: ZIP, RAR.',ar:'نص: ASCII، Unicode. صور: JPEG، PNG. صوت: MP3. فيديو: MP4. ضغط: ZIP.'},
+      {q:'Session Layer responsibilities?',a:'Acts as the "dialogue manager": establishing, maintaining, terminating sessions. Handles authentication, checkpoints, and dialog control.',ar:'مدير الحوار: إنشاء وصيانة وإنهاء الجلسات. تتولى المصادقة والتحقق والتحكم.'},
+      {q:'What is a session?',a:'A conversation between two devices/applications that begins when communication starts and ends when it finishes.',ar:'محادثة بين جهازين تبدأ عند بدء الاتصال وتنتهي عند انتهائه.'},
+      {q:'Half-Duplex vs Full-Duplex?',a:'Half-Duplex: alternating (one talks, then the other) — like a walkie-talkie. Full-Duplex: simultaneous — like a phone call.',ar:'نصف مزدوج: بالتناوب. كامل مزدوج: متزامن.'},
+      {q:'Main job of the Transport Layer?',a:'Delivers data from one process to another, ensuring completeness, correctness, and order — or speed if needed.',ar:'توصل البيانات من عملية لأخرى، وتضمن الكمال والصحة والترتيب — أو السرعة إذا لزم.'},
+      {q:'What does each Transport segment carry?',a:'Source port, Destination port, Sequence number, and Payload.',ar:'منفذ المصدر، منفذ الوجهة، رقم التسلسل، والحمولة.'},
+      {q:'Compare TCP and UDP.',a:'TCP: connection-oriented (3-way handshake), reliable, guarantees delivery. UDP: connectionless, unreliable (best effort), faster.',ar:'TCP: موجه بالاتصال، موثوق، يضمن التوصيل. UDP: بلا اتصال، غير موثوق، أسرع.'},
+      {q:'TCP 3-way handshake?',a:'SYN (sender asks), SYN-ACK (receiver agrees), ACK (sender confirms).',ar:'SYN (طلب)، SYN-ACK (موافقة)، ACK (تأكيد).'},
+      {q:'Flow Control in Transport Layer?',a:'Prevents a fast sender from overwhelming a slow receiver using windowing.',ar:'تمنع المرسل السريع من إغراق المستقبل البطيء باستخدام النوافذ.'},
+      {q:'Multiplexing in Transport Layer?',a:'Allows many applications to use the network simultaneously; each uses a different port so data goes to the right place.',ar:'تسمح للعديد من التطبيقات باستخدام الشبكة في نفس الوقت؛ كل تطبيق بمنفذ مختلف.'},
+      {q:'Main job of the Network Layer?',a:'Manages data transmission between hosts across different networks using logical addressing (IP) and routing.',ar:'تدير نقل البيانات بين المضيفين عبر شبكات مختلفة باستخدام IP والتوجيه.'},
+      {q:'IP address vs MAC address?',a:'IP is logical and can change; identifies devices globally. MAC is the fixed physical hardware address.',ar:'IP منطقي وقابل للتغيير. MAC عنوان مادي ثابت.'},
+      {q:'Main function of a Router?',a:'Connects different networks, examines destination IP, and chooses the best route using routing tables/protocols.',ar:'يربط الشبكات، يفحص IP الوجهة، ويختار أفضل مسار.'},
+      {q:'Main job of the Data Link Layer?',a:'Delivers data safely from one device to the next; packages packets into frames and uses MAC addresses.',ar:'توصل البيانات بأمان من جهاز لجهاز؛ تغلف الحزم في إطارات وتستخدم MAC.'},
+      {q:'Two sublayers of the Data Link Layer?',a:'LLC (flow/error control, talks to upper layers). MAC (media access + hardware addressing).',ar:'LLC (التدفق والأخطاء، تواصل مع العليا). MAC (الوصول للوسط والعنونة).'},
+      {q:'Three transmission modes at Physical Layer?',a:'Simplex (one-way), Half-Duplex (alternating), Full-Duplex (simultaneous).',ar:'Simplex (اتجاه واحد)، Half-Duplex (بالتناوب)، Full-Duplex (متزامن).'}
+    ],
+    summary:[
+      {en:'Application Layer (7) provides network services to apps; the layer is HTTP, not Chrome.',ar:'طبقة التطبيقات (7) تقدم خدمات الشبكة؛ الطبقة هي HTTP وليست كروم.'},
+      {en:'Key Application protocols: HTTP/HTTPS (80/443), SMTP (25), POP3 (110), IMAP (143), DNS (53), DHCP, SSH (22).',ar:'بروتوكولات التطبيقات: HTTP/HTTPS، SMTP، POP3، IMAP، DNS، DHCP، SSH.'},
+      {en:'Presentation Layer (6) is the translator: translation, encoding, compression, encryption.',ar:'طبقة التقديم (6) هي المترجم.'},
+      {en:'Presentation formats: ASCII/Unicode, JPEG/PNG, MP3/MP4, ZIP; SSL/TLS for encryption.',ar:'صيغ التقديم: ASCII/Unicode، JPEG/PNG، MP3/MP4، ZIP؛ SSL/TLS.'},
+      {en:'Session Layer (5) manages session lifecycle: Establishment, Maintenance, Termination.',ar:'طبقة الجلسة (5) تدير دورة حياة الجلسة.'},
+      {en:'Session Layer provides authentication, checkpoints/synchronization, and dialog control.',ar:'طبقة الجلسة توفر المصادقة ونقاط التحقق والتحكم في الحوار.'},
+      {en:'Half-Duplex alternates; Full-Duplex is simultaneous.',ar:'نصف المزدوج بالتناوب؛ كامل المزدوج متزامن.'},
+      {en:'Transport Layer (4) delivers process-to-process using ports.',ar:'طبقة النقل (4) توصل من عملية لعملية باستخدام المنافذ.'},
+      {en:'TCP is connection-oriented, reliable, 3-way handshake (SYN, SYN-ACK, ACK).',ar:'TCP موجه بالاتصال وموثوق ومصافحة ثلاثية.'},
+      {en:'UDP is connectionless, unreliable, fast — used for streaming, gaming, VoIP.',ar:'UDP بلا اتصال وغير موثوق وسريع.'},
+      {en:'Transport layer jobs: segmentation, connection control, flow control, error control, multiplexing.',ar:'مهام طبقة النقل: التقسيم، التحكم في الاتصال، التدفق، الأخطاء، التعددية.'},
+      {en:'Network Layer (3) uses IP addresses for logical addressing and routing.',ar:'طبقة الشبكة (3) تستخدم عناوين IP.'},
+      {en:'Routers operate at Layer 3; they examine destination IP and choose the best path.',ar:'الراوترات في الطبقة 3؛ تفحص IP الوجهة.'},
+      {en:'IP is logical and changeable; MAC is fixed hardware.',ar:'IP منطقي وقابل للتغيير؛ MAC عتاد ثابت.'},
+      {en:'Network protocols: IP, ICMP (ping), ARP (IP→MAC), OSPF/BGP/RIP.',ar:'بروتوكولات الشبكة: IP، ICMP، ARP، OSPF/BGP/RIP.'},
+      {en:'Data Link Layer (2) frames packets, uses MAC addresses, and detects errors.',ar:'طبقة ربط البيانات (2) تؤطر الحزم وتستخدم MAC وتكتشف الأخطاء.'},
+      {en:'Two sublayers: LLC (flow/error control) and MAC (media access + hardware addressing).',ar:'طبقتان فرعيتان: LLC وMAC.'},
+      {en:'Physical Layer (1) sends raw bits and defines bit rate, topology, and transmission mode.',ar:'الطبقة الفيزيائية (1) ترسل البتات الخام وتحدد السرعة والطوبولوجيا والوضع.'},
+      {en:'Transmission modes: Simplex, Half-Duplex, Full-Duplex.',ar:'أوضاع الإرسال: Simplex، Half-Duplex، Full-Duplex.'},
+      {en:'Physical devices: Hubs, Repeaters, Modems, and cables.',ar:'أجهزة الطبقة الفيزيائية: Hub، Repeater، Modem، والكابلات.'}
+    ],
+    exam:[]
+  },
+
+  part3: {
+    id:'part3', title:'Part 3: Encapsulation, TCP/IP & Addressing', pages:'Pages 27–39',
+    desc:'Data encapsulation/de-encapsulation, transmission types, collision/broadcast domains, the TCP/IP model, and IPv4 addressing.',
+    lessons:[
+      {title:'2.10 Data Encapsulation & De-encapsulation',en:'Encapsulation is the process of adding headers (and sometimes trailers) as data moves down the OSI/TCP-IP stack. Steps: Upper layers create Data; Transport adds TCP/UDP header → Segment/Datagram; Network adds IP header → Packet; Data Link adds MAC header and trailer → Frame; Physical converts frame into signals → Bits. De-encapsulation is the reverse.',ar:'التغليف هو إضافة رؤوس مع تحرك البيانات لأسفل حزمة OSI/TCP-IP. الخطوات: الطبقات العليا تنشئ البيانات؛ النقل تضيف رأس TCP/UDP؛ الشبكة تضيف رأس IP؛ ربط البيانات تضيف رأس وذيل MAC؛ الفيزيائية تحول إلى إشارات. فك التغليف هو العكس.',explain:'التغليف يعني إن كل طبقة بتضيف "ظرف" حوالين البيانات لما تنزل. زي لما تبعت رسالة: التطبيق بيكتب الرسالة، النقل بيحطها في مظروف مرقم، الشبكة بتحط مظروف أكبر بعنوان، ربط البيانات بتحط مظروف نهائي، والفيزيائية بتحولها لإشارات كهربية.',terms:[['Encapsulation','التغليف'],['De-encapsulation','فك التغليف'],['PDU','وحدة بيانات كل طبقة'],['Header / Trailer','رأس / ذيل الإطار'],['Data → Segment → Packet → Frame → Bits','تسلسل الوحدات']],exam:'مهم جدًا: ترتيب الوحدات ومتى يحدث كل تحول.'},
+      {title:'2.11 Types of Transmission',en:'Unicast (One-to-One): data from a single sender to a single specific receiver. Example: typing www.google.com. Broadcast (One-to-All): data from a single sender to every device on the local network. Uses broadcast address (e.g., 255.255.255.255 or FF:FF:FF:FF:FF:FF). Example: ARP request. Multicast (One-to-Many): data from a single sender to a specific group. Uses multicast address (224.0.0.0–239.255.255.255). Example: IPTV, video conferencing.',ar:'أحادي الإرسال (واحد لواحد): بيانات من مرسل واحد لمستقبل محدد واحد. البث العام (واحد للكل): بيانات لكل جهاز على الشبكة المحلية. متعدد الإرسال (واحد لمجموعة): بيانات لمجموعة محددة.',explain:'في 3 طرق لإرسال البيانات: Unicast – واحد يبعت لواحد بس. Broadcast – واحد يبعت للكل في الشبكة المحلية. Multicast – واحد يبعت لمجموعة معينة بس اللي طلبت البيانات.',terms:[['Unicast','أحادي – واحد لواحد'],['Broadcast','بث عام – واحد للكل'],['Multicast','متعدد – واحد لمجموعة'],['Broadcast Address','عنوان البث'],['Multicast Address','عنوان المجموعة']],exam:'مقارنة الثلاثة أنواع مع الأمثلة. مهم جدًا.'},
+      {title:'2.12 Collision and Broadcast Domains',en:'Collision Domain: the part of a network where packet collisions can occur. Common in hub environments because every hub port is in the same collision domain. Each port on a bridge, switch, or router is in a separate collision domain. Broadcast Domain: all devices that can reach each other at Layer 2 using broadcast. All ports on a hub or a switch are by default in the same broadcast domain. All ports on a router are in different broadcast domains.',ar:'نطاق التصادم: الجزء من الشبكة حيث يمكن أن تحدث تصادمات الحزم. شائع في بيئة الهَب. كل منفذ في جسر أو سويتش أو راوتر في نطاق تصادم منفصل. نطاق البث: كل الأجهزة التي يمكنها الوصول لبعضها في الطبقة 2 باستخدام البث. منافذ الهَب أو السويتش في نفس نطاق البث افتراضيًا. منافذ الراوتر في نطاقات بث مختلفة.',explain:'Collision Domain هو المكان اللي ممكن يحصل فيه تصادم. الهَب كله نطاق تصادم واحد، لكن السويتش كل منفذ فيه نطاق تصادم منفصل. Broadcast Domain هو المكان اللي بيوصل فيه البث لكل الأجهزة. الراوتر بيفصلهم.',terms:[['Collision Domain','نطاق التصادم'],['Broadcast Domain','نطاق البث'],['Collision','تصادم'],['Hub','كل منافذه نطاق تصادم واحد'],['Router','كل منافذه نطاق بث مختلف']],exam:'مهم جدًا: الفرق بين Collision Domain وBroadcast Domain.'},
+      {title:'2.13 The TCP/IP Model',en:'The TCP/IP Model is a condensed, practical version of the OSI Model. It has 4 layers and is what real networks and the Internet use. 1. Application – combines OSI\u2019s Application, Presentation, and Session; protocols HTTP, FTP, SMTP, DNS. 2. Transport – TCP (reliable) and UDP (fast); segmentation, error checking, flow control, port numbers. 3. Internet – addressing, packaging, routing; IP, ICMP, ARP. 4. Network Access (Link) – physical transmission; framing, MAC addressing, error detection.',ar:'نموذج TCP/IP هو نسخة عملية مختصرة من OSI. له 4 طبقات وهو المستخدم في الشبكات الحقيقية والإنترنت. 1. التطبيقات – تدمج التطبيقات والتقديم والجلسة. 2. النقل – TCP وUDP. 3. الإنترنت – IP وICMP وARP. 4. الوصول للشبكة – النقل المادي والتأطير وعنونة MAC.',explain:'نموذج TCP/IP هو النسخة العملية اللي الإنترنت بيشتغل بيها فعلاً. بدل 7 طبقات عندنا 4: التطبيقات (بتجمع 7 و6 و5)، النقل، الإنترنت، والوصول للشبكة (بتجمع 2 و1).',terms:[['TCP/IP Model','النموذج العملي للإنترنت'],['Application Layer','تدمج 7 و6 و5'],['Transport Layer','TCP وUDP'],['Internet Layer','IP وICMP وARP'],['Network Access','تدمج 2 و1']],exam:'مقارنة OSI (7 طبقات نظري) مع TCP/IP (4 طبقات عملي) مهمة.'},
+      {title:'Chapter 3: Understanding TCP/IP & IPv4 Addressing',en:'TCP/IP stands for Transmission Control Protocol / Internet Protocol. It is a set of rules (protocols) that allows computers and devices to communicate over a network; it is the foundation of the Internet. TCP breaks data into packets and ensures reliable delivery; IP handles addressing and routing. An IP Address is a unique numerical label assigned to every device connected to a network (IPv4 example: 192.168.1.1; IPv6 example: 2001:db8::1). Standards organizations: ICANN coordinates IP address allocation, domain name management.',ar:'TCP/IP تعني بروتوكول التحكم في الإرسال / بروتوكول الإنترنت. وهي مجموعة قواعد تسمح للحواسيب بالاتصال عبر الشبكة؛ وهي أساس الإنترنت. TCP يقسم البيانات ويضمن التوصيل الموثوق؛ IP يتولى العنونة والتوجيه. عنوان IP هو تسمية رقمية فريدة لكل جهاز (مثال IPv4: 192.168.1.1؛ IPv6: 2001:db8::1). منظمات المعايير: ICANN تنسق تخصيص عناوين IP وإدارة أسماء النطاقات.',explain:'TCP/IP هو الأساس اللي الإنترنت شغال بيه. TCP مسؤول عن إن الداتا توصل كاملة وصحيحة، وIP مسؤول عن العنونة والتوصيل. عنوان IP هو رقم فريد لكل جهاز. منظمة ICANN هي اللي بتدير توزيع عناوين IP وأسماء النطاقات.',terms:[['TCP/IP','مجموعة بروتوكولات الإنترنت'],['IP Address','عنوان رقمي فريد للجهاز'],['IPv4','عنوان 32-بت'],['IPv6','عنوان 128-بت'],['ICANN','منظمة إدارة عناوين الإنترنت وأسماء النطاقات']],exam:'اعرف تعريف TCP وIP، أمثلة عناوين IPv4 وIPv6، ودور ICANN.'}
+    ],
+    flashcards:[
+      {q:'What is encapsulation?',a:'The process of adding headers (and sometimes trailers) to data as it moves down the OSI/TCP-IP stack.',ar:'إضافة رؤوس وأحيانًا ذيول للبيانات أثناء تحركها لأسفل الحزمة.'},
+      {q:'List the PDU at each encapsulation step.',a:'Data (L7-5) → Segment/Datagram (L4) → Packet (L3) → Frame (L2) → Bits (L1).',ar:'بيانات ← مقطع/مخطط ← حزمة ← إطار ← بتات.'},
+      {q:'What happens during de-encapsulation?',a:'The receiving computer strips away headers and trailers as data moves up the stack, from Physical to Application.',ar:'الجهاز المستقبل يزيل الرؤوس مع تحرك البيانات لأعلى الحزمة.'},
+      {q:'Define Unicast and give an example.',a:'One-to-one: a single sender to a single specific receiver. Example: typing www.google.com.',ar:'واحد لواحد: مرسل واحد لمستقبل محدد. مثال: كتابة www.google.com.'},
+      {q:'Define Broadcast and give an example.',a:'One-to-all: a single sender to every device on the local network. Example: ARP request.',ar:'واحد للكل: مرسل واحد لكل جهاز على الشبكة المحلية. مثال: طلب ARP.'},
+      {q:'Define Multicast and give an example.',a:'One-to-many: a single sender to a specific group of subscribed devices. Example: IPTV, video conferencing.',ar:'واحد لمجموعة: مرسل واحد لمجموعة محددة مشتركة. مثال: IPTV.'},
+      {q:'What is a Collision Domain?',a:'The part of a network where packet collisions can occur when two devices send at the same time on the shared segment.',ar:'الجزء من الشبكة حيث تحدث تصادمات الحزم عند الإرسال المتزامن.'},
+      {q:'What is a Broadcast Domain?',a:'All devices that can reach each other at Layer 2 using broadcast. Routers separate broadcast domains.',ar:'كل الأجهزة التي يمكنها الوصول لبعضها في الطبقة 2 باستخدام البث.'},
+      {q:'How do routers affect broadcast domains?',a:'Each port on a router is in a different broadcast domain; routers do not forward broadcasts between domains.',ar:'كل منفذ في الراوتر في نطاق بث مختلف؛ الراوترات لا تمرر البث.'},
+      {q:'How do switches affect collision domains?',a:'Each port on a switch is in a separate collision domain, reducing collisions compared to hubs.',ar:'كل منفذ في السويتش في نطاق تصادم منفصل، مما يقلل التصادمات.'},
+      {q:'Name the 4 layers of the TCP/IP model.',a:'Application, Transport, Internet, Network Access (Link).',ar:'التطبيقات، النقل، الإنترنت، الوصول للشبكة.'},
+      {q:'Which OSI layers are combined into TCP/IP Application?',a:'OSI Application, Presentation, and Session layers.',ar:'طبقات التطبيقات والتقديم والجلسة.'},
+      {q:'Which OSI layers are combined into TCP/IP Network Access?',a:'OSI Data Link and Physical layers.',ar:'طبقتي ربط البيانات والفيزيائية.'},
+      {q:'What does TCP guarantee that UDP does not?',a:'TCP guarantees reliable delivery (checksums, retransmission, correct sequence). UDP does not verify or recover from errors.',ar:'TCP يضمن توصيلاً موثوقًا. UDP لا يتحقق من الأخطاء ولا يعالجها.'},
+      {q:'What is an IP address?',a:'A unique numerical label assigned to every device connected to a network, used for logical addressing and routing.',ar:'تسمية رقمية فريدة تُعطى لكل جهاز متصل بالشبكة.'},
+      {q:'Give an example of an IPv4 address.',a:'Example: 192.168.1.1 — a 32-bit logical address.',ar:'مثال: 192.168.1.1 — عنوان منطقي 32-بت.'},
+      {q:'Give an example of an IPv6 address.',a:'Example: 2001:db8::1 — a 128-bit logical address.',ar:'مثال: 2001:db8::1 — عنوان منطقي 128-بت.'},
+      {q:'What does ICANN coordinate?',a:'ICANN coordinates IP address allocation, domain name management, and assignment of other information.',ar:'ICANN تنسق تخصيص عناوين IP وإدارة أسماء النطاقات.'},
+      {q:'TCP vs IP in the TCP/IP suite?',a:'TCP breaks data into packets and ensures reliable delivery. IP handles addressing and routing so packets reach the correct destination.',ar:'TCP يقسم البيانات ويضمن التوصيل. IP يتولى العنونة والتوجيه.'},
+      {q:'Compare OSI and TCP/IP models.',a:'OSI: 7 layers, theoretical, developed by ISO, used for teaching. TCP/IP: 4 layers, practical, developed by DARPA, used in real networks/Internet.',ar:'OSI: 7 طبقات، نظري، ISO، للتدريس. TCP/IP: 4 طبقات، عملي، DARPA، للشبكات الحقيقية.'}
+    ],
+    summary:[
+      {en:'Encapsulation adds headers/trailers as data moves down: Data → Segment → Packet → Frame → Bits.',ar:'التغليف يضيف رؤوس/ذيول: بيانات ← مقطع ← حزمة ← إطار ← بتات.'},
+      {en:'De-encapsulation removes headers as data moves up from Physical to Application.',ar:'فك التغليف يزيل الرؤوس مع صعود البيانات.'},
+      {en:'Unicast = one-to-one (web browsing). Broadcast = one-to-all (ARP). Multicast = one-to-many (IPTV).',ar:'Unicast = واحد لواحد. Broadcast = واحد للكل. Multicast = واحد لمجموعة.'},
+      {en:'Broadcast addresses: 255.255.255.255 (IPv4) or FF:FF:FF:FF:FF:FF (MAC).',ar:'عناوين البث: 255.255.255.255 أو FF:FF:FF:FF:FF:FF.'},
+      {en:'Multicast addresses: 224.0.0.0–239.255.255.255 (IPv4).',ar:'عناوين Multicast: 224.0.0.0–239.255.255.255.'},
+      {en:'Collision domain: where packet collisions occur. Hub ports share one; switch ports have separate ones.',ar:'نطاق التصادم: منافذ الهَب مشتركة؛ منافذ السويتش منفصلة.'},
+      {en:'Broadcast domain: devices reachable by Layer 2 broadcast. Routers separate domains.',ar:'نطاق البث: الراوترات تفصل النطاقات.'},
+      {en:'TCP/IP model has 4 layers: Application, Transport, Internet, Network Access.',ar:'نموذج TCP/IP له 4 طبقات.'},
+      {en:'TCP/IP Application combines OSI Application + Presentation + Session.',ar:'تطبيقات TCP/IP تدمج 3 طبقات OSI.'},
+      {en:'TCP/IP Network Access combines OSI Data Link + Physical.',ar:'الوصول للشبكة يدمج طبقتي OSI.'},
+      {en:'TCP provides reliable delivery; IP provides addressing and routing.',ar:'TCP يوفر التوصيل الموثوق؛ IP يوفر العنونة والتوجيه.'},
+      {en:'TCP/IP is practical and used in real networks/Internet; OSI is theoretical/reference.',ar:'TCP/IP عملي؛ OSI نظري.'},
+      {en:'IP address is a unique numerical label for each device on a network.',ar:'عنوان IP تسمية رقمية فريدة لكل جهاز.'},
+      {en:'IPv4 example: 192.168.1.1 (32-bit). IPv6 example: 2001:db8::1 (128-bit).',ar:'مثال IPv4: 192.168.1.1. مثال IPv6: 2001:db8::1.'},
+      {en:'ICANN coordinates IP allocation and domain name management.',ar:'ICANN تنسق تخصيص IP وإدارة أسماء النطاقات.'},
+      {en:'UDP is connectionless and unreliable but fast; used for streaming, gaming, VoIP.',ar:'UDP بلا اتصال وغير موثوق لكن سريع.'},
+      {en:'Each layer at the sender adds information; the receiver strips it symmetrically.',ar:'كل طبقة عند المرسل تضيف؛ المستقبل يزيل.'},
+      {en:'Switches reduce collision domains but not broadcast domains (by default).',ar:'السويتشات تقلل نطاقات التصادم لكن ليس البث.'},
+      {en:'Routers reduce both collision and broadcast domains.',ar:'الراوترات تقلل نطاقي التصادم والبث.'},
+      {en:'The TCP/IP suite is the foundation of the Internet and almost all modern networks.',ar:'مجموعة TCP/IP هي أساس الإنترنت ومعظم الشبكات الحديثة.'}
+    ],
+    exam:[]
+  }
+}};
+
+/* Build part exams from a pool of 60 each (using quiz + additional questions) */
+(function buildPartExams(){
+  // For the part exams, use the first 60 from a curated pool for each part
+  DATA.parts.part1.exam = QUIZ_QUESTIONS.filter(q=>['easy','medium'].includes(q.lvl)).slice(0,60).map(q=>({q:q.q,ar:q.ar,o:q.o,c:q.c,exp:q.exp,expAr:q.expAr,lvl:q.lvl.charAt(0).toUpperCase()+q.lvl.slice(1)}));
+  DATA.parts.part2.exam = QUIZ_QUESTIONS.slice(0,60).map(q=>({q:q.q,ar:q.ar,o:q.o,c:q.c,exp:q.exp,expAr:q.expAr,lvl:q.lvl.charAt(0).toUpperCase()+q.lvl.slice(1)}));
+  DATA.parts.part3.exam = QUIZ_QUESTIONS.slice(0,60).map(q=>({q:q.q,ar:q.ar,o:q.o,c:q.c,exp:q.exp,expAr:q.expAr,lvl:q.lvl.charAt(0).toUpperCase()+q.lvl.slice(1)}));
+  // Final exam: 20 from each part
+  const p1 = DATA.parts.part1.exam.slice(0,20).map(q=>({...q,from:'Part 1'}));
+  const p2 = DATA.parts.part2.exam.slice(0,20).map(q=>({...q,from:'Part 2'}));
+  const p3 = DATA.parts.part3.exam.slice(0,20).map(q=>({...q,from:'Part 3'}));
+  DATA.finalExam = [...p1,...p2,...p3];
+})();
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+const STORAGE_KEY = 'cn_ch1_progress_v2';
+const defaultProgress = () => ({
+  parts:{
+    part1:{lessonsDone:[],lastLesson:0,flashcardsReviewed:[],examScore:null,examAnswers:[],wrongQuestions:[],completed:false},
+    part2:{lessonsDone:[],lastLesson:0,flashcardsReviewed:[],examScore:null,examAnswers:[],wrongQuestions:[],completed:false},
+    part3:{lessonsDone:[],lastLesson:0,flashcardsReviewed:[],examScore:null,examAnswers:[],wrongQuestions:[],completed:false}
+  },
+  quiz:{bestScore:null,currentIndex:0,answers:[],started:false},
+  finalExamScore:null,
+  lastLocation:null,
+  theme:'light'
+});
+let progress = loadProgress();
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      const def = defaultProgress();
+      return {...def, ...p, parts:{...def.parts, ...p.parts}, quiz:{...def.quiz, ...(p.quiz||{})}};
+    }
+  }catch(e){}
+  return defaultProgress();
+}
+function saveProgress(){ try{localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));}catch(e){} }
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = (sel)=>document.querySelector(sel);
+const app = $('#app');
+function showToast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._timer); t._timer=setTimeout(()=>t.classList.remove('show'),2500); }
+function escapeHtml(s){ if(typeof s!=='string') return s; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function pctForPart(partId){
+  const p = progress.parts[partId]; if(!p) return 0;
+  const data = DATA.parts[partId];
+  let done=0,total=0;
+  if(data.lessons.length){ done += (p.lessonsDone.length/data.lessons.length)*0.4; total+=0.4; }
+  if(data.flashcards.length){ done += (p.flashcardsReviewed.length/data.flashcards.length)*0.2; total+=0.2; }
+  if(p.examScore!==null){ done += (p.examScore/60)*0.4; total+=0.4; }
+  if(total===0) return 0;
+  return Math.round((done/total)*100);
+}
+function partStatus(partId){
+  const p=progress.parts[partId]; const pct=pctForPart(partId);
+  if(p.completed) return 'completed';
+  if(pct>0 || p.lessonsDone.length>0) return 'inprogress';
+  return 'notstarted';
+}
+function overallProgress(){ let s=0; for(const id in DATA.parts) s+=pctForPart(id); return Math.round(s/3); }
+function performanceLevel(score){
+  if(score>=54) return {label:'ممتاز – Excellent 🏆',cls:'good'};
+  if(score>=42) return {label:'جيد جدًا – Very Good 🌟',cls:'good'};
+  if(score>=30) return {label:'جيد – Good 👍',cls:''};
+  if(score>=18) return {label:'مقبول – Pass ✔️',cls:''};
+  return {label:'يحتاج مراجعة – Needs Review 📚',cls:'bad'};
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let state = {
+  view:'dashboard',
+  currentPart:null,
+  currentStage:'study',
+  lessonIndex:0,
+  flashIndex:0,
+  flashShowAnswer:false,
+  examIndex:0,
+  examSelected:null,
+  examConfirmed:false,
+  examTempAnswers:[],
+  quizIndex: progress.quiz.currentIndex || 0,
+  quizSelected:null,
+  quizConfirmed:false,
+  quizAnswers: progress.quiz.answers || [],
+  finalFlashIdx:0,
+  finalFlashList:[]
+};
+
+/* ============================================================
+   RENDER: DASHBOARD
+   ============================================================ */
+function renderDashboard(){
+  const op = overallProgress();
+  let cards = '';
+  for(const id of ['part1','part2','part3']){
+    const d = DATA.parts[id]; const p = progress.parts[id];
+    const pct = pctForPart(id); const status = partStatus(id);
+    const badgeCls = status==='completed'?'badge-completed':status==='inprogress'?'badge-inprogress':'badge-notstarted';
+    const badgeTxt = status==='completed'?'Completed ✓':status==='inprogress'?'In Progress':'Not Started';
+    const examScore = p.examScore!==null?`${p.examScore}/60`:'—';
+    cards += `
+      <div class="part-card">
+        <span class="part-badge ${badgeCls}">${badgeTxt}</span>
+        <h3>${d.title}</h3>
+        <div class="pages">${d.pages}</div>
+        <div class="desc">${d.desc}</div>
+        <div class="part-stats">
+          <div class="stat-box"><div class="num">${p.lessonsDone.length}/${d.lessons.length}</div><div class="lbl">دروس مكتملة</div></div>
+          <div class="stat-box"><div class="num">${p.flashcardsReviewed.length}/${d.flashcards.length}</div><div class="lbl">بطاقات مراجعة</div></div>
+        </div>
+        <div class="part-stats">
+          <div class="stat-box"><div class="num">${examScore}</div><div class="lbl">نتيجة الاختبار</div></div>
+          <div class="stat-box"><div class="num">${pct}%</div><div class="lbl">نسبة الإنجاز</div></div>
+        </div>
+        <div class="part-progress">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <span class="pct">${pct}% مكتمل</span>
+        </div>
+        <button class="btn full" onclick="openPart('${id}')">${status==='notstarted'?'ابدأ الدراسة':'متابعة الدراسة'} →</button>
+      </div>`;
+  }
+  const best = progress.quiz.bestScore;
+  const bestText = best!==null?`Best: ${best}/60`:'No attempts yet';
+  const inProgressText = progress.quiz.started && progress.quiz.answers.length>0 ? ` • قيد التقدم: ${progress.quiz.answers.filter(a=>a).length}/60` : '';
+
+  let finalSection = '';
+  if(progress.parts.part1.completed || progress.parts.part2.completed || progress.parts.part3.completed){
+    const allDone = progress.parts.part1.completed && progress.parts.part2.completed && progress.parts.part3.completed;
+    finalSection = `
+      <div class="revision-section" style="margin-top:28px;">
+        <h3>📚 Final Chapter Revision – المراجعة النهائية</h3>
+        <p style="color:var(--text-soft); font-size:.9rem; margin-bottom:14px;">مراجعة شاملة لجميع الأجزاء الثلاثة + اختبار نهائي من 60 سؤالًا.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn" onclick="openFinal()">📖 فتح المراجعة النهائية</button>
+          <button class="btn secondary" onclick="openFinalExam()">✍️ الاختبار النهائي الشامل</button>
+        </div>
+        ${!allDone?'<p style="font-size:.8rem; color:var(--amber); margin-top:10px;">⚠️ أكمل الأجزاء الثلاثة للحصول على أفضل نتيجة.</p>':''}
+      </div>`;
+  }
+
+  app.innerHTML = `
+    <h1 class="page-title">Dashboard – لوحة التحكم</h1>
+    <p class="page-sub">Computer Networks – Interactive Study Platform</p>
+
+    <div class="quiz-banner">
+      <div class="quiz-banner-icon">🎯</div>
+      <div class="quiz-banner-content">
+        <h3>Comprehensive Quiz – 60 Questions</h3>
+        <p>اختبار شامل يغطي جميع موضوعات الفصل – سؤال واحد في كل مرة مع التصحيح والتفسير</p>
+      </div>
+      <div class="quiz-banner-actions">
+        <div class="quiz-best-score">${bestText}${inProgressText}</div>
+        <button class="btn" onclick="openQuiz()">${progress.quiz.started && progress.quiz.answers.length>0 && progress.quiz.answers.length<60 ? 'متابعة الاختبار →' : 'ابدأ الاختبار →'}</button>
+      </div>
+    </div>
+
+    <div class="progress-panel">
+      <div class="progress-head">
+        <h3>التقدم الإجمالي في الفصل</h3>
+        <strong style="color:var(--blue); font-size:1.1rem;">${op}%</strong>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${op}%"></div></div>
+      <div class="progress-meta">
+        <span>${Object.values(progress.parts).reduce((a,p)=>a+p.lessonsDone.length,0)} درس مكتمل</span>
+        <span>${Object.values(progress.parts).reduce((a,p)=>a+p.flashcardsReviewed.length,0)} بطاقة مراجعة</span>
+        <span>${Object.values(progress.parts).filter(p=>p.completed).length}/3 أجزاء مكتملة</span>
+      </div>
+    </div>
+    <div class="cards">${cards}</div>
+    ${finalSection}
+  `;
+}
+
+/* ============================================================
+   PART VIEW
+   ============================================================ */
+function openPart(partId){
+  state.currentPart = partId;
+  state.view = 'part';
+  state.currentStage = 'study';
+  state.lessonIndex = progress.parts[partId].lastLesson || 0;
+  state.flashIndex = 0; state.flashShowAnswer = false;
+  state.examIndex = 0; state.examSelected = null; state.examConfirmed = false;
+  state.examTempAnswers = [];
+  progress.lastLocation = {partId};
+  saveProgress();
+  renderPart();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPart(){
+  const partId = state.currentPart;
+  const d = DATA.parts[partId]; const p = progress.parts[partId];
+  const pct = pctForPart(partId);
+  const stages = [
+    {id:'study',label:'Study & Explanation',icon:'📖',done:p.lessonsDone.length===d.lessons.length},
+    {id:'flashcards',label:'20 Flashcards',icon:'🃏',done:p.flashcardsReviewed.length===d.flashcards.length},
+    {id:'summary',label:'20 Key Points',icon:'📝',done:p.lessonsDone.length===d.lessons.length},
+    {id:'exam',label:'Final Exam (60)',icon:'✍️',done:p.examScore!==null},
+    {id:'results',label:'Part Results',icon:'📊',done:p.examScore!==null}
+  ];
+  let stageTabs = '';
+  stages.forEach((s,i)=>{ stageTabs += `<button class="stage-tab ${state.currentStage===s.id?'active':''} ${s.done?'done':''}" onclick="switchStage('${s.id}')"><span class="step-num">${s.done?'✓':i+1}</span> ${s.label}</button>`; });
+  let content='';
+  if(state.currentStage==='study') content = renderStudy(partId,d,p);
+  else if(state.currentStage==='flashcards') content = renderFlashcards(partId,d,p);
+  else if(state.currentStage==='summary') content = renderSummary(partId,d,p);
+  else if(state.currentStage==='exam') content = renderExam(partId,d,p);
+  else if(state.currentStage==='results') content = renderPartResults(partId,d,p);
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <h1 class="page-title" style="margin-top:16px;">${d.title}</h1>
+    <p class="page-sub">${d.pages} • نسبة الإنجاز: <strong style="color:var(--blue);">${pct}%</strong></p>
+    <div class="stage-tabs">${stageTabs}</div>
+    <div id="stageContent">${content}</div>`;
+}
+
+function switchStage(stage){
+  state.currentStage = stage;
+  state.flashShowAnswer = false;
+  state.flashIndex = 0;
+  if(stage==='exam'){ state.examIndex=0; state.examSelected=null; state.examConfirmed=false; state.examTempAnswers=[]; }
+  renderPart();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* STUDY */
+function renderStudy(partId,d,p){
+  const li = Math.min(state.lessonIndex, d.lessons.length-1);
+  const lesson = d.lessons[li];
+  const isDone = p.lessonsDone.includes(li);
+  let pills = '';
+  d.lessons.forEach((L,i)=>{ const done=p.lessonsDone.includes(i); pills += `<button class="lesson-pill ${i===li?'active':''} ${done?'done':''}" onclick="gotoLesson(${i})">${done?'✓ ':''}${i+1}. ${L.title.split(' ').slice(0,2).join(' ')}</button>`; });
+  let termsTable = '';
+  if(lesson.terms){
+    termsTable = `<table class="term-table"><tr><th>Term (English)</th><th>المعنى بالعربية</th></tr>`;
+    lesson.terms.forEach(([t,a])=>{ termsTable += `<tr><td>${escapeHtml(t)}</td><td>${escapeHtml(a)}</td></tr>`; });
+    termsTable += `</table>`;
+  }
+  const actions = `
+    <div class="lesson-actions">
+      <button class="btn secondary" onclick="gotoLesson(${li-1})" ${li===0?'disabled':''}>← Previous Lesson</button>
+      <button class="btn ${isDone?'green':''}" onclick="markLessonDone(${li})" ${isDone?'disabled':''}>${isDone?'✓ Completed':'Mark as Completed'}</button>
+      <button class="btn" onclick="gotoLesson(${li+1})" ${li===d.lessons.length-1?'disabled':''}>Next Lesson →</button>
+    </div>`;
+  return `
+    <div class="lesson-nav">${pills}</div>
+    <div class="study-card">
+      <h2>${lesson.title}</h2>
+      <p class="lesson-subtitle">الدرس ${li+1} من ${d.lessons.length}</p>
+      <div class="content-block"><h4><span class="ico">🇬🇧</span> Original Text (English)</h4><div class="en-text en">${escapeHtml(lesson.en)}</div></div>
+      <div class="content-block"><h4><span class="ico">🇪🇬</span> الترجمة العربية</h4><div class="ar-text">${escapeHtml(lesson.ar)}</div></div>
+      <div class="content-block"><h4><span class="ico">💡</span> شرح مبسط (مصري)</h4><div class="explain">${escapeHtml(lesson.explain)}</div></div>
+      ${lesson.terms?`<div class="content-block"><h4><span class="ico">📚</span> المصطلحات العلمية</h4>${termsTable}</div>`:''}
+      ${lesson.exam?`<div class="content-block"><h4><span class="ico">🎯</span> أهم معلومات الامتحان</h4><div class="exam-note"><strong>Exam Focus:</strong> ${escapeHtml(lesson.exam)}</div></div>`:''}
+      ${actions}
+    </div>`;
+}
+function gotoLesson(i){
+  const d = DATA.parts[state.currentPart];
+  if(i<0 || i>=d.lessons.length) return;
+  state.lessonIndex = i;
+  progress.parts[state.currentPart].lastLesson = i;
+  saveProgress();
+  renderPart();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function markLessonDone(i){
+  const p = progress.parts[state.currentPart];
+  if(!p.lessonsDone.includes(i)){ p.lessonsDone.push(i); p.lessonsDone.sort((a,b)=>a-b); saveProgress(); showToast('✓ تم إكمال الدرس!'); }
+  const d = DATA.parts[state.currentPart];
+  if(i < d.lessons.length-1){ state.lessonIndex = i+1; p.lastLesson = i+1; saveProgress(); }
+  renderPart();
+}
+
+/* FLASHCARDS */
+function renderFlashcards(partId,d,p){
+  const idx = state.flashIndex; const card = d.flashcards[idx]; const reviewed = p.flashcardsReviewed.includes(idx); const showAns = state.flashShowAnswer;
+  return `
+    <div class="flash-wrap">
+      <div class="flash-counter">Flashcard ${idx+1} of ${d.flashcards.length}</div>
+      <div class="flash-card">
+        <div class="flash-label">QUESTION – السؤال</div>
+        <div class="flash-q en">${escapeHtml(card.q)}</div>
+        ${showAns?`<div class="flash-answer"><div class="ans-en en"><strong>Answer:</strong> ${escapeHtml(card.a)}</div><div class="ans-ar"><strong>الترجمة:</strong> ${escapeHtml(card.ar)}</div></div>`:''}
+      </div>
+      <div class="flash-controls">
+        <button class="btn secondary" onclick="prevFlash()" ${idx===0?'disabled':''}>← Previous</button>
+        ${!showAns?`<button class="btn" onclick="showFlashAnswer()">👁️ Show Answer</button>`:`<button class="btn green" onclick="markFlashReviewed()">${reviewed?'✓ Reviewed':'Mark as Reviewed'}</button>`}
+        <button class="btn secondary" onclick="nextFlash()" ${idx===d.flashcards.length-1?'disabled':''}>Next →</button>
+        <button class="btn secondary" onclick="shuffleFlash()">🔀 Shuffle</button>
+      </div>
+      <div class="reviewed-tag">${reviewed?'✓ تمت مراجعة هذه البطاقة':''}</div>
+    </div>`;
+}
+function showFlashAnswer(){ state.flashShowAnswer = true; renderPart(); }
+function prevFlash(){ if(state.flashIndex>0){ state.flashIndex--; state.flashShowAnswer=false; renderPart(); } }
+function nextFlash(){ const d = DATA.parts[state.currentPart]; if(state.flashIndex<d.flashcards.length-1){ state.flashIndex++; state.flashShowAnswer=false; renderPart(); } }
+function markFlashReviewed(){
+  const p = progress.parts[state.currentPart]; const idx = state.flashIndex;
+  if(!p.flashcardsReviewed.includes(idx)){ p.flashcardsReviewed.push(idx); p.flashcardsReviewed.sort((a,b)=>a-b); saveProgress(); showToast('✓ تمت مراجعة البطاقة!'); }
+  renderPart();
+}
+function shuffleFlash(){ state.flashIndex = Math.floor(Math.random()*DATA.parts[state.currentPart].flashcards.length); state.flashShowAnswer=false; renderPart(); }
+
+/* SUMMARY */
+function renderSummary(partId,d,p){
+  let items = '';
+  d.summary.forEach((s,i)=>{ items += `<div class="summary-item"><div class="summary-num">${i+1}</div><div class="summary-body"><div class="summary-en en">${escapeHtml(s.en)}</div><div class="summary-ar">${escapeHtml(s.ar)}</div></div><button class="star-btn" onclick="toggleStar(this)" title="مهم للمراجعة">★</button></div>`; });
+  return `<div class="summary-list">${items}</div><p style="text-align:center; color:var(--text-soft); font-size:.8rem; margin-top:16px;">اضغط ★ لحفظ النقاط المهمة للمراجعة.</p>`;
+}
+function toggleStar(btn){ btn.classList.toggle('on'); showToast(btn.classList.contains('on')?'⭐ تم حفظ النقطة':'تم إلغاء الحفظ'); }
+
+/* EXAM */
+function renderExam(partId,d,p){
+  const idx = state.examIndex; const q = d.exam[idx]; const total = d.exam.length;
+  const selected = state.examSelected; const confirmed = state.examConfirmed;
+  let options = '';
+  q.o.forEach((opt,i)=>{
+    let cls = 'option';
+    if(confirmed){ cls+=' disabled'; if(i===q.c) cls+=' correct'; else if(i===selected) cls+=' wrong'; }
+    else if(i===selected) cls += ' selected';
+    options += `<div class="${cls}" onclick="selectOption(${i})"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span class="en">${escapeHtml(opt)}</span></div>`;
+  });
+  let feedback = '';
+  if(confirmed){
+    const isC = selected===q.c;
+    feedback = `<div class="exam-feedback ${isC?'correct':'wrong'}"><div class="fb-title ${isC?'correct':'wrong'}">${isC?'✓ إجابة صحيحة!':'✗ إجابة خاطئة'}</div><div class="fb-body"><div>${isC?'Correct! الإجابة الصحيحة هي: ':'الإجابة الصحيحة هي: '}<strong class="en">${escapeHtml(q.o[q.c])}</strong></div><div style="margin-top:8px;"><strong>Explanation:</strong> ${escapeHtml(q.exp)}</div><div class="fb-ar"><strong>الشرح:</strong> ${escapeHtml(q.expAr)}</div></div></div>`;
+  }
+  const isLast = idx===total-1;
+  return `
+    <div class="exam-wrap">
+      <div class="exam-head"><div class="exam-progress"><div class="exam-q-num">Question ${idx+1} of ${total} • ${q.lvl||'Medium'}</div><div class="progress-bar"><div class="progress-fill" style="width:${(idx/total)*100}%"></div></div></div></div>
+      <div class="exam-card">
+        <div class="exam-q-text en">${escapeHtml(q.q)}</div>
+        <div class="exam-q-text-ar">${escapeHtml(q.ar)}</div>
+        <div style="margin-top:18px;">${options}</div>
+        ${!confirmed?`<button class="btn full mt-16" onclick="confirmAnswer()" ${selected===null?'disabled':''}>Confirm Answer</button>`:feedback}
+        ${confirmed?`<div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">${!isLast?`<button class="btn full" onclick="nextExamQuestion()">Next Question →</button>`:`<button class="btn green full" onclick="finishExam()">إظهار النتيجة النهائية 📊</button>`}</div>`:''}
+      </div>
+    </div>`;
+}
+function selectOption(i){ if(state.examConfirmed) return; state.examSelected=i; renderPart(); }
+function confirmAnswer(){
+  if(state.examSelected===null) return;
+  state.examConfirmed = true;
+  const q = DATA.parts[state.currentPart].exam[state.examIndex];
+  state.examTempAnswers[state.examIndex] = {qIndex:state.examIndex,selected:state.examSelected,correct:q.c,isCorrect:state.examSelected===q.c};
+  renderPart();
+}
+function nextExamQuestion(){ state.examIndex++; state.examSelected=null; state.examConfirmed=false; renderPart(); window.scrollTo({top:0,behavior:'smooth'}); }
+function finishExam(){
+  const partId = state.currentPart; const d = DATA.parts[partId]; const p = progress.parts[partId];
+  let correct=0; const answers=[]; const wrong=[];
+  d.exam.forEach((q,i)=>{
+    const a = state.examTempAnswers[i]; const sel = a?a.selected:-1; const isC = sel===q.c;
+    if(isC) correct++;
+    answers.push({i,selected:sel,correct:q.c,isCorrect:isC});
+    if(!isC) wrong.push({qIndex:i,q:q.q,correctAns:q.o[q.c],exp:q.exp,expAr:q.expAr});
+  });
+  p.examScore = correct; p.examAnswers = answers; p.wrongQuestions = wrong;
+  if(correct >= 36) p.completed = true;
+  saveProgress();
+  state.currentStage = 'results';
+  renderPart();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* RESULTS */
+function renderPartResults(partId,d,p){
+  if(p.examScore===null){
+    return `<div class="center" style="padding:40px 20px;"><p style="font-size:1.1rem; color:var(--text-soft); margin-bottom:18px;">لم تجرِ الاختبار بعد.</p><button class="btn" onclick="switchStage('exam')">اذهب للاختبار →</button></div>`;
+  }
+  const score = p.examScore; const pct = Math.round((score/60)*100); const perf = performanceLevel(score); const correctCount = score; const wrongCount = 60-score;
+  let wrongList = '';
+  if(p.wrongQuestions.length){
+    wrongList = `<h3 style="color:var(--navy); margin-bottom:12px; font-size:1rem;">❌ الأسئلة الخاطئة (${wrongCount})</h3><div class="wrong-list">${p.wrongQuestions.map(w=>`<div class="wrong-item"><div class="wq en">${escapeHtml(w.q)}</div><div class="wa">✓ الإجابة الصحيحة: <span class="en">${escapeHtml(w.correctAns)}</span></div><div style="font-size:.82rem; color:var(--text-soft); margin-top:6px;">${escapeHtml(w.expAr)}</div></div>`).join('')}</div>`;
+  }
+  let nextPartBtn = '';
+  if(partId==='part1') nextPartBtn = `<button class="btn" onclick="openPart('part2')">Continue to Part 2 →</button>`;
+  else if(partId==='part2') nextPartBtn = `<button class="btn" onclick="openPart('part3')">Continue to Part 3 →</button>`;
+  else nextPartBtn = `<button class="btn green" onclick="openFinal()">Go to Final Revision 🎓</button>`;
+  return `
+    <div class="results-wrap">
+      <div class="score-circle" style="--pct:${pct}%"><div class="score-inner"><div class="score-num">${score}<span style="font-size:1rem; color:var(--text-soft);">/60</span></div><div class="score-lbl">${pct}%</div></div></div>
+      <div class="perf-banner" style="background:var(--bg-soft); color:${pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${perf.label}</div>
+      <div class="results-grid">
+        <div class="result-box good"><div class="num">${correctCount}</div><div class="lbl">Correct Answers</div></div>
+        <div class="result-box bad"><div class="num">${wrongCount}</div><div class="lbl">Wrong Answers</div></div>
+        <div class="result-box"><div class="num">${pct}%</div><div class="lbl">Percentage</div></div>
+        <div class="result-box"><div class="num">${p.completed?'✓':'—'}</div><div class="lbl">Part Status</div></div>
+      </div>
+      ${wrongList}
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+        <button class="btn secondary" onclick="switchStage('exam')">Retake Exam 🔄</button>
+        ${nextPartBtn}
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   NEW: STANDALONE 60-QUESTION QUIZ
+   ============================================================ */
+function openQuiz(){
+  state.view = 'quiz';
+  state.quizIndex = progress.quiz.currentIndex || 0;
+  state.quizSelected = null;
+  state.quizConfirmed = false;
+  state.quizAnswers = progress.quiz.answers || [];
+  renderQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderQuiz(){
+  if(state.quizIndex >= QUIZ_QUESTIONS.length){ renderQuizResults(); return; }
+  const q = QUIZ_QUESTIONS[state.quizIndex];
+  const total = QUIZ_QUESTIONS.length;
+  const current = state.quizIndex + 1;
+  const pct = Math.round((state.quizIndex/total)*100);
+  let optionsHTML = '';
+  q.o.forEach((opt,i)=>{
+    let cls = 'option';
+    if(state.quizConfirmed){ cls += ' disabled'; if(i===q.c) cls += ' correct'; else if(i===state.quizSelected) cls += ' wrong'; }
+    else if(i===state.quizSelected) cls += ' selected';
+    const letter = String.fromCharCode(65+i);
+    optionsHTML += `<div class="${cls}" onclick="quizSelect(${i})"><span class="opt-letter">${letter}</span><span class="en">${escapeHtml(opt)}</span></div>`;
+  });
+  let feedbackHTML = '';
+  if(state.quizConfirmed){
+    const isCorrect = state.quizSelected === q.c;
+    feedbackHTML = `<div class="exam-feedback ${isCorrect?'correct':'wrong'}"><div class="fb-title ${isCorrect?'correct':'wrong'}">${isCorrect?'✓ إجابة صحيحة!':'✗ إجابة خاطئة'}</div><div class="fb-body"><div><strong>Correct Answer:</strong> <span class="en">${escapeHtml(q.o[q.c])}</span></div><div style="margin-top:8px;"><strong>Explanation:</strong> ${escapeHtml(q.exp)}</div><div class="fb-ar"><strong>الشرح:</strong> ${escapeHtml(q.expAr)}</div></div></div>`;
+  }
+  const isLast = state.quizIndex === total-1;
+  const lvlClass = q.lvl==='easy'?'easy':q.lvl==='medium'?'medium':'hard';
+  const lvlText = q.lvl.charAt(0).toUpperCase()+q.lvl.slice(1);
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <div class="quiz-hero" style="margin-top:14px;">
+      <div class="quiz-hero-title">🎯 Comprehensive Quiz – 60 Questions</div>
+      <div class="quiz-hero-sub">سؤال واحد في كل مرة – اختر إجابتك ثم اضغط Confirm Answer لعرض التصحيح والتفسير</div>
+      <div class="progress-meta" style="margin-bottom:6px;"><span>Question ${current} of ${total}</span><span>${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="exam-card">
+      <div class="q-meta"><span class="q-num">سؤال ${current}</span><span class="q-level ${lvlClass}">${lvlText}</span></div>
+      <div class="exam-q-text en">${escapeHtml(q.q)}</div>
+      <div class="exam-q-text-ar">${escapeHtml(q.ar)}</div>
+      <div style="margin-top:18px;">${optionsHTML}</div>
+      ${feedbackHTML}
+      <div style="margin-top:16px;">
+        ${!state.quizConfirmed
+          ? `<button class="btn full" onclick="quizConfirm()" ${state.quizSelected===null?'disabled':''}>Confirm Answer</button>`
+          : (isLast
+              ? `<button class="btn green full" onclick="quizFinish()">إظهار النتيجة النهائية 📊</button>`
+              : `<button class="btn full" onclick="quizNext()">Next Question →</button>`)}
+      </div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function quizSelect(i){
+  if(state.quizConfirmed) return;
+  state.quizSelected = i;
+  renderQuiz();
+}
+function quizConfirm(){
+  if(state.quizSelected === null) return;
+  state.quizConfirmed = true;
+  const q = QUIZ_QUESTIONS[state.quizIndex];
+  state.quizAnswers[state.quizIndex] = { selected: state.quizSelected, correct: q.c, isCorrect: state.quizSelected === q.c };
+  progress.quiz.answers = state.quizAnswers;
+  progress.quiz.currentIndex = state.quizIndex;
+  progress.quiz.started = true;
+  saveProgress();
+  renderQuiz();
+}
+function quizNext(){
+  state.quizIndex++;
+  state.quizSelected = null;
+  state.quizConfirmed = false;
+  progress.quiz.currentIndex = state.quizIndex;
+  saveProgress();
+  renderQuiz();
+}
+function quizFinish(){
+  state.quizIndex = QUIZ_QUESTIONS.length;
+  let correct = 0;
+  state.quizAnswers.forEach(a=>{ if(a && a.isCorrect) correct++; });
+  const best = progress.quiz.bestScore;
+  if(best === null || correct > best) progress.quiz.bestScore = correct;
+  progress.quiz.started = false;
+  progress.quiz.currentIndex = 0;
+  progress.quiz.answers = [];
+  saveProgress();
+  renderQuizResults();
+}
+
+function renderQuizResults(){
+  let correct = 0;
+  state.quizAnswers.forEach(a=>{ if(a && a.isCorrect) correct++; });
+  const total = QUIZ_QUESTIONS.length;
+  const wrong = total - correct;
+  const pct = Math.round((correct/total)*100);
+  const perf = performanceLevel(correct);
+  let wrongItems = '';
+  state.quizAnswers.forEach((a,i)=>{
+    if(a && !a.isCorrect){
+      const q = QUIZ_QUESTIONS[i];
+      wrongItems += `<div class="wrong-item"><div class="wq">سؤال ${i+1}: <span class="en">${escapeHtml(q.q)}</span></div><div class="wa">✓ الإجابة الصحيحة: <span class="en">${escapeHtml(q.o[q.c])}</span></div><div style="font-size:.82rem; color:var(--text-soft); margin-top:6px;">${escapeHtml(q.expAr)}</div></div>`;
+    }
+  });
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <div class="results-wrap" style="margin-top:20px;">
+      <div class="results-wrap">
+        <div class="center" style="font-size:1.5rem; font-weight:800; color:var(--navy); margin-bottom:16px;">🏁 النتيجة النهائية – Quiz</div>
+        <div class="score-circle" style="--pct:${pct}%"><div class="score-inner"><div class="score-num">${correct}<span style="font-size:1rem; color:var(--text-soft);">/${total}</span></div><div class="score-lbl">${pct}%</div></div></div>
+        <div class="perf-banner" style="background:var(--bg-soft); color:${pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${perf.label}</div>
+        <div class="results-grid">
+          <div class="result-box good"><div class="num">${correct}</div><div class="lbl">Correct</div></div>
+          <div class="result-box bad"><div class="num">${wrong}</div><div class="lbl">Wrong</div></div>
+          <div class="result-box"><div class="num">${pct}%</div><div class="lbl">Percentage</div></div>
+          <div class="result-box"><div class="num">${progress.quiz.bestScore||correct}/60</div><div class="lbl">Best Score</div></div>
+        </div>
+        ${wrongItems?`<h3 style="color:var(--navy); margin-bottom:12px;">❌ الأسئلة الخاطئة (${wrong})</h3><div class="wrong-list">${wrongItems}</div>`:''}
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:24px; flex-wrap:wrap;">
+          <button class="btn" onclick="restartQuiz()">🔄 إعادة الاختبار</button>
+          <button class="btn secondary" onclick="goDashboard()">العودة للوحة التحكم</button>
+        </div>
+      </div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restartQuiz(){
+  state.quizIndex = 0;
+  state.quizSelected = null;
+  state.quizConfirmed = false;
+  state.quizAnswers = [];
+  progress.quiz = { bestScore: progress.quiz.bestScore, currentIndex: 0, answers: [], started: true };
+  saveProgress();
+  state.view = 'quiz';
+  renderQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============================================================
+   FINAL REVISION
+   ============================================================ */
+function openFinal(){
+  state.view = 'final';
+  renderFinal();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderFinal(){
+  let allFlashcards = [];
+  for(const id of ['part1','part2','part3']) DATA.parts[id].flashcards.forEach(f=>allFlashcards.push({...f,part:id}));
+  let allTerms = []; const seen = new Set();
+  for(const id of ['part1','part2','part3']) DATA.parts[id].lessons.forEach(L=>(L.terms||[]).forEach(([t,a])=>{ if(!seen.has(t)){seen.add(t); allTerms.push({t,a});} }));
+  const totalScore = ['part1','part2','part3'].reduce((a,id)=>a+(progress.parts[id].examScore||0),0);
+  let partsSummary = '';
+  for(const id of ['part1','part2','part3']){
+    const d = DATA.parts[id]; const p = progress.parts[id];
+    partsSummary += `<div class="summary-item"><div class="summary-num" style="background:var(--navy);">${id.slice(-1)}</div><div class="summary-body"><div class="summary-en">${d.title} — ${p.examScore!==null?p.examScore+'/60':'لم يختبر بعد'}</div><div class="summary-ar">${p.lessonsDone.length}/${d.lessons.length} دروس • ${p.flashcardsReviewed.length}/${d.flashcards.length} بطاقات</div></div><button class="btn small secondary" onclick="openPart('${id}')">فتح</button></div>`;
+  }
+  const termsTable = allTerms.map(x=>`<tr><td class="en">${escapeHtml(x.t)}</td><td>${escapeHtml(x.a)}</td></tr>`).join('');
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <h1 class="page-title" style="margin-top:16px;">🎓 Final Chapter Revision – المراجعة النهائية</h1>
+    <p class="page-sub">مراجعة شاملة لجميع أجزاء الفصل الدراسي</p>
+    <div class="revision-section">
+      <h3>📊 ملخص نتائج الأجزاء</h3>
+      ${partsSummary}
+      <div class="results-grid" style="margin-top:16px;">
+        <div class="result-box"><div class="num">${totalScore}/180</div><div class="lbl">مجموع الاختبارات</div></div>
+        <div class="result-box"><div class="num">${allFlashcards.length}</div><div class="lbl">إجمالي Flashcards</div></div>
+        <div class="result-box"><div class="num">${allTerms.length}</div><div class="lbl">مصطلح تقني</div></div>
+      </div>
+    </div>
+    <div class="revision-section">
+      <h3>🃏 مراجعة جميع الـ Flashcards (${allFlashcards.length})</h3>
+      <p style="color:var(--text-soft); font-size:.88rem; margin-bottom:12px;">مراجعة سريعة لكل البطاقات من الأجزاء الثلاثة.</p>
+      <div id="finalFlashArea"></div>
+      <button class="btn" onclick="startFinalFlashReview()">ابدأ مراجعة البطاقات →</button>
+    </div>
+    <div class="revision-section">
+      <h3>📚 أهم المصطلحات التقنية (${allTerms.length})</h3>
+      <table class="term-table"><tr><th>Term</th><th>المعنى</th></tr>${termsTable}</table>
+    </div>
+    <div class="revision-section center">
+      <h3>✍️ الاختبار النهائي الشامل</h3>
+      <p style="color:var(--text-soft); font-size:.88rem; margin-bottom:16px;">60 سؤالًا جديدًا يغطي الأجزاء الثلاثة (20 لكل جزء).</p>
+      <button class="btn" onclick="openFinalExam()">ابدأ الاختبار النهائي الشامل →</button>
+    </div>`;
+}
+function startFinalFlashReview(){
+  state.finalFlashList = [];
+  for(const id of ['part1','part2','part3']) DATA.parts[id].flashcards.forEach(f=>state.finalFlashList.push({...f,part:id}));
+  state.finalFlashList.sort(()=>Math.random()-0.5);
+  state.finalFlashIdx = 0;
+  renderFinalFlash();
+}
+function renderFinalFlash(){
+  const area = $('#finalFlashArea'); if(!area) return;
+  const idx = state.finalFlashIdx || 0;
+  if(idx >= state.finalFlashList.length){ area.innerHTML = '<p class="center" style="padding:20px; color:var(--green); font-weight:700;">✓ أكملت مراجعة جميع البطاقات!</p>'; return; }
+  const f = state.finalFlashList[idx];
+  area.innerHTML = `<div class="flash-card" style="margin-bottom:14px;"><div class="flash-label">Card ${idx+1} of ${state.finalFlashList.length}</div><div class="flash-q en">${escapeHtml(f.q)}</div><div class="flash-answer"><div class="ans-en en"><strong>Answer:</strong> ${escapeHtml(f.a)}</div><div class="ans-ar"><strong>الترجمة:</strong> ${escapeHtml(f.ar)}</div></div></div><div class="flash-controls"><button class="btn secondary" onclick="finalFlashPrev()" ${idx===0?'disabled':''}>← Previous</button><button class="btn" onclick="finalFlashNext()">${idx<state.finalFlashList.length-1?'Next →':'إنهاء'}</button></div>`;
+}
+function finalFlashNext(){ state.finalFlashIdx++; renderFinalFlash(); }
+function finalFlashPrev(){ if(state.finalFlashIdx>0){ state.finalFlashIdx--; renderFinalFlash(); } }
+
+/* FINAL EXAM */
+function openFinalExam(){
+  state.view = 'finalExam';
+  state.finalExam = { idx:0, selected:null, confirmed:false, answers:[], questions:DATA.finalExam, order:shuffleArray(DATA.finalExam.map((_,i)=>i)) };
+  renderFinalExam();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function shuffleArray(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function renderFinalExam(){
+  const st = state.finalExam; const idx = st.idx; const realIdx = st.order[idx]; const q = st.questions[realIdx]; const total = st.questions.length;
+  let options = '';
+  q.o.forEach((opt,i)=>{ let cls='option'; if(st.confirmed){ cls+=' disabled'; if(i===q.c) cls+=' correct'; else if(i===st.selected) cls+=' wrong'; } else if(i===st.selected) cls+=' selected'; options += `<div class="${cls}" onclick="finalSelect(${i})"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span class="en">${escapeHtml(opt)}</span></div>`; });
+  let feedback = '';
+  if(st.confirmed){ const isC = st.selected===q.c; feedback = `<div class="exam-feedback ${isC?'correct':'wrong'}"><div class="fb-title ${isC?'correct':'wrong'}">${isC?'✓ إجابة صحيحة!':'✗ إجابة خاطئة'}</div><div class="fb-body"><div><strong>Correct Answer:</strong> <span class="en">${escapeHtml(q.o[q.c])}</span></div><div style="margin-top:8px;"><strong>Explanation:</strong> ${escapeHtml(q.exp)}</div><div class="fb-ar">${escapeHtml(q.expAr)}</div></div></div>`; }
+  const isLast = idx===total-1;
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <h1 class="page-title" style="margin-top:14px;">✍️ الاختبار النهائي الشامل</h1>
+    <p class="page-sub">${q.from} • Question ${idx+1} of ${total}</p>
+    <div class="exam-wrap" style="margin-top:20px;">
+      <div class="progress-bar" style="margin-bottom:20px;"><div class="progress-fill" style="width:${(idx/total)*100}%"></div></div>
+      <div class="exam-card">
+        <div class="exam-q-text en">${escapeHtml(q.q)}</div>
+        <div class="exam-q-text-ar">${escapeHtml(q.ar)}</div>
+        <div style="margin-top:18px;">${options}</div>
+        ${!st.confirmed?`<button class="btn full mt-16" onclick="finalConfirm()" ${st.selected===null?'disabled':''}>Confirm Answer</button>`:feedback}
+        ${st.confirmed?(isLast?`<button class="btn green full mt-16" onclick="finalFinish()">إظهار النتيجة النهائية 📊</button>`:`<button class="btn full mt-16" onclick="finalNext()">Next Question →</button>`):''}
+      </div>
+    </div>`;
+}
+function finalSelect(i){ if(state.finalExam.confirmed) return; state.finalExam.selected=i; renderFinalExam(); }
+function finalConfirm(){ const st=state.finalExam; if(st.selected===null) return; st.confirmed=true; const realIdx=st.order[st.idx]; const q=st.questions[realIdx]; st.answers[st.idx]={realIdx,selected:st.selected,correct:q.c,isCorrect:st.selected===q.c}; renderFinalExam(); }
+function finalNext(){ const st=state.finalExam; st.idx++; st.selected=null; st.confirmed=false; renderFinalExam(); window.scrollTo({top:0,behavior:'smooth'}); }
+function finalFinish(){
+  const st = state.finalExam; let correct=0; const wrong=[];
+  st.answers.forEach(a=>{ if(!a) return; if(a.isCorrect) correct++; else { const q=st.questions[a.realIdx]; wrong.push({q:q.q,correctAns:q.o[q.c],exp:q.exp,expAr:q.expAr}); } });
+  progress.finalExamScore = correct; saveProgress();
+  const pct = Math.round((correct/60)*100);
+  const perf = performanceLevel(correct);
+  app.innerHTML = `
+    <button class="btn secondary small" onclick="goDashboard()">← رجوع للوحة التحكم</button>
+    <div class="results-wrap" style="margin-top:20px;">
+      <h1 class="page-title center">🏁 النتيجة النهائية للاختبار الشامل</h1>
+      <div class="score-circle" style="--pct:${pct}%; margin-top:24px;"><div class="score-inner"><div class="score-num">${correct}<span style="font-size:1rem; color:var(--text-soft);">/60</span></div><div class="score-lbl">${pct}%</div></div></div>
+      <div class="perf-banner" style="background:var(--bg-soft); color:${pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)'};">${perf.label}</div>
+      <div class="results-grid">
+        <div class="result-box good"><div class="num">${correct}</div><div class="lbl">Correct</div></div>
+        <div class="result-box bad"><div class="num">${60-correct}</div><div class="lbl">Wrong</div></div>
+        <div class="result-box"><div class="num">${pct}%</div><div class="lbl">Percentage</div></div>
+      </div>
+      ${wrong.length?`<h3 style="color:var(--navy); margin-bottom:12px;">❌ الأسئلة الخاطئة</h3><div class="wrong-list">${wrong.map(w=>`<div class="wrong-item"><div class="wq en">${escapeHtml(w.q)}</div><div class="wa">✓ <span class="en">${escapeHtml(w.correctAns)}</span></div><div style="font-size:.82rem; color:var(--text-soft); margin-top:6px;">${escapeHtml(w.expAr)}</div></div>`).join('')}</div>`:'<p class="center" style="color:var(--green); font-weight:700;">🎉 ممتاز! لا توجد أسئلة خاطئة.</p>'}
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:24px; flex-wrap:wrap;">
+        <button class="btn" onclick="openFinalExam()">إعادة الاختبار 🔄</button>
+        <button class="btn secondary" onclick="goDashboard()">العودة للوحة التحكم</button>
+      </div>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============================================================
+   NAVIGATION & THEME
+   ============================================================ */
+function goDashboard(){ state.view='dashboard'; state.currentPart=null; renderDashboard(); window.scrollTo({top:0,behavior:'smooth'}); }
+function initTheme(){ const saved = progress.theme || 'light'; document.documentElement.setAttribute('data-theme', saved); updateThemeBtn(saved); }
+function toggleTheme(){ const cur = document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light'; const next = cur==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme', next); progress.theme = next; saveProgress(); updateThemeBtn(next); }
+function updateThemeBtn(t){ $('#themeBtn').textContent = t==='dark'?'☀️':'🌙'; }
+
+function init(){
+  initTheme();
+  $('#themeBtn').addEventListener('click', toggleTheme);
+  renderDashboard();
+}
+init();
+</script>
+</body>
+</html>
